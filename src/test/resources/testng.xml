@@ -1,0 +1,66 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="API Test Suite" parallel="false">
+    
+    <!-- 1. Login Test - First to get authentication -->
+    <test name="Login Tests">
+        <classes>
+            <class name="tests.auth.LoginTest"/>
+        </classes>
+    </test>
+    
+    <!-- 2. Employee Test -->
+    <test name="Employee Tests">
+        <classes>
+            <class name="tests.employee.CreateEmployeeTest"/>
+            <class name="tests.employee.UpdateEmployeeTest"/>
+            <class name="tests.employee.DeleteEmployeeTest"/>
+        </classes>
+    </test>
+    <!-- 3. Division Test -->
+    <test name="Division Tests">
+         <classes>
+            <class name="tests.division.CreateDivisionTest"/>
+            <class name="tests.division.UpdateDivisionTest"/>
+            <class name="tests.division.DeleteDivisionTest"/>
+        </classes>
+    </test>
+
+    
+    <!-- 3. Training Test - Create training data -->
+    <test name="Training Tests">
+        <classes>
+            <class name="tests.training.CreateTrainingTest"/>
+            <class name="tests.training.UpdateTrainingTest"/>
+
+        </classes>
+    </test>
+
+    <!-- 4. Chapter Test - Create chapter data -->
+    <test name="Chapter Tests">
+        <classes>
+            <class name="tests.chapter.ChapterDataDrivenTest"/>
+        </classes>
+    </test>
+
+    <!-- 5. Content Test - Create content data -->
+    <test name="Content Tests">
+        <classes>
+            <class name="tests.content.ContentDataDrivenTest"/>
+        </classes>
+    </test>
+
+    <!-- 6. Update Content Test - Update existing content -->
+    <test name="Update Content Tests">
+        <classes>
+            <class name="tests.content.UpdateContentFromJsonTest"/>
+        </classes>
+    </test>
+
+    <!-- 7. Delete Content Test - Delete content -->
+    <test name="Delete Content Tests">
+        <classes>
+            <class name="tests.content.DeleteContentFromJsonTest"/>
+        </classes>
+    </test>
+    
+</suite>

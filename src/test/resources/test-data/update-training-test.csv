@@ -1,0 +1,2 @@
+id,title,description,type,isSequential,scenario,expectedResult
+{lastCreatedId},Updated Database Training,Updated database concepts for advanced users,training,false,Update valid training,SUCCESS

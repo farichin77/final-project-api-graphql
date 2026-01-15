@@ -1,0 +1,4 @@
+title,description,type,isSequential,scenario,expectedResult
+Database Advanced,Learn basic database concepts and SQL,training,false,Create valid training,SUCCESS
+,Missing title,training,false,Create training without title,SUCCESS
+Advanced Training,Learn advanced concepts,training,true,Create sequential training,SUCCESS

@@ -1,0 +1,2 @@
+id,title,description,order,programId,scenario,expectedResult
+{lastCreatedId},Updated SQL Basics,Updated SQL concepts for intermediate level,1,73d72701-7e2e-473d-a9e9-c529c6c8b361,Update valid chapter,SUCCESS

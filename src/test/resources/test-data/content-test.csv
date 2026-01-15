@@ -1,0 +1,7 @@
+title,description,order,article,articleType,chapterId,duration,isRandomQuestion,mediaId,thumbnailUrl,type,scenario,expectedResult
+Introduction Video,Introduction to SQL basics,0,,video,add0b28c-6591-42d0-8234-9fc69cba3632,30,false,f252a1a0-5017-4f74-883c-ba44f5e23d7e,,video,Create valid video content,SUCCESS
+,Missing description,1,,video,add0b28c-6591-42d0-8234-9fc69cba3632,30,false,f252a1a0-5017-4f74-883c-ba44f5e23d7e,,video,Create content without title,FAIL
+Test SDLC,Software Development Lifecycle article,3,,article,add0b28c-6591-42d0-8234-9fc69cba3632,300,false,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,article,Create valid article content 1,SUCCESS
+,Missing description,6,,article,add0b28c-6591-42d0-8234-9fc69cba3632,120,false,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,article,Create article without title,FAIL
+test sdlc,Test content type with random questions,7,,test,add0b28c-6591-42d0-8234-9fc69cba3632,22,true,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,test,Create valid test content,SUCCESS
+,Test content type with random questions,7,,test,add0b28c-6591-42d0-8234-9fc69cba3632,22,true,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,test,Create valid test content,FAIL

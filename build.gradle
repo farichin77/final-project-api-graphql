@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+}
+
+group = 'com'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.rest-assured:rest-assured:6.0.0'
+    implementation 'org.testng:testng:7.11.0'
+    implementation 'tools.jackson.core:jackson-databind:3.0.3'
+    implementation 'org.slf4j:slf4j-simple:2.0.17'
+    implementation 'io.github.cdimascio:dotenv-java:3.2.0'
+    implementation 'com.google.code.gson:gson:2.13.2'
+    implementation 'org.apache.poi:poi:5.2.5'
+    implementation 'org.apache.poi:poi-ooxml:5.2.5'
+}
+
+test {
+    useTestNG()
+
+    // Show test output
+    testLogging {
+        events "passed", "failed", "skipped"
+        showStandardStreams true
+    }
+}

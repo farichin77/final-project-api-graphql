@@ -1,0 +1,4 @@
+id,scenario,expectedResult
+{videoContentId},Delete valid video content,SUCCESS
+{articleContentId},Delete valid article content,SUCCESS
+{testContentId},Delete valid test content,SUCCESS

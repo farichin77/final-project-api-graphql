@@ -1,0 +1,2 @@
+email,password,company_id,scenario,expected_result
+arwendymelyn@dibimbing.id,s2et9bh6l,811637b1-9989-4d45-a9f5-220c5f2354f7,Login with valid credentials,SUCCESS

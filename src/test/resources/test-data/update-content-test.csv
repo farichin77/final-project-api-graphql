@@ -1,0 +1,4 @@
+id,title,description,order,article,articleType,chapterId,duration,isRandomQuestion,mediaId,thumbnailUrl,type,scenario,expectedResult
+{lastCreatedId},Updated Introduction Video,Updated introduction to SQL basics,3,,video,add0b28c-6591-42d0-8234-9fc69cba3632,30,false,f252a1a0-5017-4f74-883c-ba44f5e23d7e,,video,Update valid video content,SUCCESS
+{lastCreatedId},Updated Test SDLC,Updated Software Development Lifecycle article,4,,article,add0b28c-6591-42d0-8234-9fc69cba3632,300,false,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,article,Update valid article content,SUCCESS
+{lastCreatedId},Updated Test Content,Updated test content with random questions,5,,test,add0b28c-6591-42d0-8234-9fc69cba3632,22,true,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,test,Update valid test content,SUCCESS

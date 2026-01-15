@@ -1,0 +1,5 @@
+mutation CreateEmployee($input: CreateEmployeeInput!) {
+  createEmployee(input: $input) {
+    id
+  }
+}

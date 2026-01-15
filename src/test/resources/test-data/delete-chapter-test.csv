@@ -1,0 +1,2 @@
+id,scenario,expectedResult
+{lastCreatedId},Delete valid chapter,SUCCESS
