@@ -1,0 +1,10 @@
+query GetChapter($id: String!) {
+  chapterById(id: $id) {
+    id
+    title
+    description
+    order
+    programId
+    __typename
+  }
+}

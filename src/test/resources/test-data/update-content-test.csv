@@ -1,4 +1,4 @@
 id,title,description,order,article,articleType,chapterId,duration,isRandomQuestion,mediaId,thumbnailUrl,type,scenario,expectedResult
-{lastCreatedId},Updated Introduction Video terbaru,Updated introduction to SQL basics,3,,video,{latestChapterId},30,false,f252a1a0-5017-4f74-883c-ba44f5e23d7e,,video,Update valid video content,SUCCESS
-{lastCreatedId},Updated Test SDLC & sdlc,Updated Software Development Lifecycle article,4,,article,{latestChapterId},300,false,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,article,Update valid article content,SUCCESS
-{lastCreatedId},Updated Test dengan yang baru,Updated test content with random questions,5,,test,{latestChapterId},22,true,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,test,Update valid test content,SUCCESS
+{lastCreatedId},Updated Introduction Video terbaru,Updated introduction to SQL basics,3,,video,{latestChapterId},30,false,f252a1a0-5017-4f74-883c-ba44f5e23d7e,,video,Update with valid video content,SUCCESS
+{lastCreatedId},Updated Test SDLC & sdlc,Updated Software Development Lifecycle article,4,,article,{latestChapterId},300,false,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,article,Update with valid article content,SUCCESS
+{lastCreatedId},Updated Test dengan yang baru,Updated test content with random questions,5,,test,{latestChapterId},22,true,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,test,Update with valid test content,SUCCESS

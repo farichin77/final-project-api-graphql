@@ -11,48 +11,38 @@
         </classes>
     </test>
 
-    <test name="Employee Tests">
-        <classes>
-            <class name="tests.employee.CreateEmployeeTest"/>
-            <class name="tests.employee.UpdateEmployeeTest"/>
-            <class name="tests.employee.DeleteEmployeeTest"/>
-        </classes>
-    </test>
-
-    <test name="Division Tests">
+    <test name="Create and Update Tests">
         <classes>
             <class name="tests.division.CreateDivisionTest"/>
             <class name="tests.division.UpdateDivisionTest"/>
-            <class name="tests.division.DeleteDivisionTest"/>
-        </classes>
-    </test>
-
-    <test name="Training Tests">
-        <classes>
             <class name="tests.training.CreateTrainingTest"/>
             <class name="tests.training.UpdateTrainingTest"/>
-        </classes>
-    </test>
-
-    <test name="Chapter Tests">
-        <classes>
             <class name="tests.chapter.CreateChapterTest"/>
             <class name="tests.chapter.UpdateChapterTest"/>
-        </classes>
-    </test>
-
-    <test name="Content Tests">
-        <classes>
             <class name="tests.content.CreateContentTest"/>
             <class name="tests.content.UpdateContentTest"/>
-            <class name="tests.content.DeleteContentTest"/>
+            <class name="tests.employee.CreateEmployeeTest"/>
+            <class name="tests.employee.UpdateEmployeeTest"/>
         </classes>
     </test>
 
-    <test name="Delete Chapter and Training Tests">
+    <test name="Get Data Verification Tests">
         <classes>
+            <class name="tests.division.GetDivisionTest"/>
+            <class name="tests.training.GetTrainingTest"/>
+            <class name="tests.chapter.GetChapterTest"/>
+            <class name="tests.content.GetContentTest"/>
+            <class name="tests.employee.GetEmployeeTest"/>
+        </classes>
+    </test>
+
+    <test name="Delete Tests">
+        <classes>
+            <class name="tests.content.DeleteContentTest"/>
             <class name="tests.chapter.DeleteChapterTest"/>
             <class name="tests.training.DeleteTrainingTest"/>
+            <class name="tests.employee.DeleteEmployeeTest"/>
+            <class name="tests.division.DeleteDivisionTest"/>
         </classes>
     </test>
 

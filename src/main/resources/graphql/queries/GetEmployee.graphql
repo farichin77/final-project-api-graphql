@@ -1,0 +1,29 @@
+query employeeById($id: String!) {
+  employeeById(id: $id) {
+    id
+    profilePictureUrl
+    employeeId
+    name
+    gender
+    dateOfBirth
+    email
+    phoneNumber
+    address
+    division {
+      name
+      id
+      __typename
+    }
+    employeeRole
+    angkatanId
+    angkatan {
+      id
+      name
+      __typename
+    }
+    nik
+    npwp
+    status
+    __typename
+  }
+}

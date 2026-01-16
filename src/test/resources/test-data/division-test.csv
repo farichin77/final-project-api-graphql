@@ -1,3 +1,3 @@
 name,description,scenario,expectedResult
-maintenance,Business Division,Create valid division,SUCCESS
-,,create with empty al field,FAIL
+maintenance,Business Division,Create division with valid data,SUCCESS
+,,create division with empty all field,FAIL

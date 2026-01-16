@@ -19,10 +19,10 @@ public class BaseTest {
         ExtentManager.flush();
     }
 
-    @BeforeMethod
-    public void resetSession() {
-        AuthSession.setSessionCookie(null);
-    }
+//    @BeforeMethod
+//    public void resetSession() {
+//        AuthSession.setSessionCookie(null);
+//    }
 
     @AfterMethod
     public void tearDownTest() {

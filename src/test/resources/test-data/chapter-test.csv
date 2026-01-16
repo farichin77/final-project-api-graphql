@@ -1,3 +1,3 @@
 title,description,order,programId,scenario,expectedResult
-SQL Basics,Learn basic SQL concepts,0,{latestTrainingId},Create valid chapter,SUCCESS
+SQL Basics,Learn basic SQL concepts,0,{latestTrainingId},Create valid chapter with valid data,SUCCESS
 ,,1,{latestTrainingId},Create chapter with all empty field,FAIL

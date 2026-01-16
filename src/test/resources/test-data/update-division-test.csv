@@ -1,3 +1,3 @@
 id,name,description,scenario,expectedResult
-{lastCreatedId},maintenace group Division, maintenace adalah group penting,Update valid division,SUCCESS
-{lastCreatedId},,,Update invalid empty all field,FAIL
+{lastCreatedId},maintenace group Division, maintenace adalah group penting,Update division with valid data,SUCCESS
+{lastCreatedId},,,Update invalid division empty all field,FAIL

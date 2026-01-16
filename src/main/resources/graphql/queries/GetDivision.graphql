@@ -1,0 +1,7 @@
+query getDivision($id: String!) {
+  divisionById(id: $id) {
+    id
+    name
+    __typename
+  }
+}

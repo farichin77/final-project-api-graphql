@@ -1,0 +1,11 @@
+query GetContent($id: String!) {
+  contentById(id: $id) {
+    id
+    title
+    description
+    order
+    chapterId
+    type
+    __typename
+  }
+}

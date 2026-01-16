@@ -1,7 +1,7 @@
 title,description,order,article,articleType,chapterId,duration,isRandomQuestion,mediaId,thumbnailUrl,type,scenario,expectedResult
-Introduction Video,Introduction to SQL basics,0,,video,{latestChapterId},30,false,f252a1a0-5017-4f74-883c-ba44f5e23d7e,,video,Create valid video content,SUCCESS
-,Missing description,1,,video,{latestChapterId},30,false,f252a1a0-5017-4f74-883c-ba44f5e23d7e,,video,Create content without title,FAIL
-article  SDLC,Software Development Lifecycle article,3,,article,{latestChapterId},300,false,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,article,Create valid article content 1,SUCCESS
-,Missing description,6,,article,{latestChapterId},120,false,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,article,Create article without title,FAIL
-Test ujian sdlc,Test content type with random questions,7,,test,{latestChapterId},22,true,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,test,Create valid test content,SUCCESS
-,Test content type with random questions,7,,test,{latestChapterId},22,true,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,test,Create test without title,FAIL
+Introduction Video,Introduction to SQL basics,0,,video,{latestChapterId},30,false,f252a1a0-5017-4f74-883c-ba44f5e23d7e,,video,Create content video with valid data,SUCCESS
+,,1,,video,{latestChapterId},30,false,f252a1a0-5017-4f74-883c-ba44f5e23d7e,,video,Create content video with all empty field,FAIL
+article  SDLC,Software Development Lifecycle article,3,,article,{latestChapterId},300,false,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,article,Create content article with valid data,SUCCESS
+,,6,,article,{latestChapterId},120,false,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,article,Create article content with empthy all field,FAIL
+Test ujian sdlc,Test content type with random questions,7,,test,{latestChapterId},22,true,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,test,Create test content with valid data,SUCCESS
+,,7,,test,{latestChapterId},22,true,2101dd1b-39ba-47ca-98dd-1a1eba0f90d8,,test,Create test content with empty all field,FAIL

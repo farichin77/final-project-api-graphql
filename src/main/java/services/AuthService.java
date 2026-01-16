@@ -30,17 +30,27 @@ public class AuthService {
         );
 
         LoginResponse loginResponse = response.as(LoginResponse.class);
+        String sid = response.getCookie("sid_b2b");
 
-        // Only throw exception if login succeeded but no cookie
-        if (loginResponse.data != null && loginResponse.data.login.user != null && response.getCookie("sid_b2b") == null) {
+        // Fallback for manual parsing if getCookie fails
+        if (sid == null) {
+            for (String header : response.getHeaders().getValues("Set-Cookie")) {
+                if (header.contains("sid_b2b=")) {
+                    sid = header.split("sid_b2b=")[1].split(";")[0];
+                    break;
+                }
+            }
+        }
+
+        // Only throw exception if login succeeded but no cookie even after fallback
+        if (loginResponse.data != null && loginResponse.data.login.user != null && sid == null) {
+            System.out.println("DEBUG: All headers: " + response.getHeaders().toString());
             throw new RuntimeException("Login succeeded but sid_b2b cookie missing");
         }
 
         // Set session cookie if login succeeded
         if (loginResponse.data != null && loginResponse.data.login.user != null) {
-            String sid = response.getCookie("sid_b2b");
             AuthSession.setSessionCookie(sid);
-            System.out.println("SID: " + sid);
         }
 
         return new ApiResponse<>(

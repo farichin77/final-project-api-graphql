@@ -1,0 +1,9 @@
+query GetProgram($id: String!) {
+  programById(id: $id) {
+    id
+    title
+    description
+    type
+    __typename
+  }
+}

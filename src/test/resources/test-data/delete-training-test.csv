@@ -1,2 +1,2 @@
 id,scenario,expectedResult
-{lastCreatedId},Delete valid training,SUCCESS
+{lastCreatedId},Delete valid training data,SUCCESS

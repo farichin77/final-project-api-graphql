@@ -1,6 +1,7 @@
 package tests.division;
 
 import core.BaseTest;
+import models.responses.division.GetDivisionResponse;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import services.AuthService;
@@ -64,4 +65,5 @@ public class CreateDivisionTest extends BaseTest {
             }
         }
     }
+
 }
