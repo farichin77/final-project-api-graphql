@@ -8,108 +8,66 @@ import client.GraphQlClient;
 import utils.CsvReader;
 import utils.TestDataProvider;
 import utils.GraphQlFileReader;
+import utils.JsonHelper;
+import utils.FilePaths;
+import models.requests.training.CreateTrainingVariable;
+import models.responses.training.CreateProgramResponse;
 import io.restassured.response.Response;
 
 import java.util.Map;
-import java.util.HashMap;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class CreateTrainingTest extends BaseTest {
 
     @Test(dataProvider = "trainingTestData", dataProviderClass = TestDataProvider.class)
     public void testCreateTrainingWithDataDriven(CsvReader.TrainingTestData testData) {
-        // First authenticate to get valid session
         AuthService.postLogin();
 
-        // Prepare variables for training creation
-        Map<String, Object> inputMap = new HashMap<>();
-        inputMap.put("title", testData.title);
-        inputMap.put("description", testData.description);
-        inputMap.put("type", testData.type);
-        inputMap.put("isSequential", testData.isSequential);
-
-        Map<String, Object> variables = new HashMap<>();
-        variables.put("input", inputMap);
+        Map<String, Object> variables = CreateTrainingVariable.variables(
+            testData.title,
+            testData.description,
+            testData.type,
+            testData.isSequential
+        );
 
         String query = GraphQlFileReader.readMutation("CreateTraining.graphql");
-
         Response response = GraphQlClient.execute(query, variables);
         
-        System.out.println("Test Scenario: " + testData.scenario);
+        System.out.println("Scenario: " + testData.scenario);
+        System.out.println("Variables: " + variables);
         System.out.println("Response Status: " + response.statusCode());
         System.out.println("Response Body: " + response.asString());
 
         if (response.statusCode() == 200) {
             try {
-                String responseBody = response.getBody().asString();
+                CreateProgramResponse responseBody = response.as(CreateProgramResponse.class);
+                boolean hasGraphQLErrors = responseBody.errors != null && !responseBody.errors.isEmpty();
                 
                 if ("SUCCESS".equalsIgnoreCase(testData.expectedResult)) {
-                    // Verify successful training creation
-                    Assert.assertFalse(responseBody.contains("errors"), 
-                        "Response should not have GraphQL errors for scenario: " + testData.scenario);
-                    Assert.assertTrue(responseBody.contains("\"createProgram\""), 
-                        "Response should contain createProgram for scenario: " + testData.scenario);
-                    Assert.assertTrue(responseBody.contains("\"id\""), 
-                        "Response should contain training ID for scenario: " + testData.scenario);
+                    Assert.assertFalse(hasGraphQLErrors, "Response has GraphQL errors: " + testData.scenario);
+                    Assert.assertNotNull(responseBody.data, "Response data is null");
+                    Assert.assertNotNull(responseBody.data.createProgram, "createProgram object is null");
                     
-                    // Extract training ID and save to JSON
-                    String trainingId = extractTrainingId(responseBody);
-                    if (trainingId != null && !testData.title.isEmpty()) {
-                        saveTrainingIdToJson(trainingId, testData.title);
+                    String trainingId = responseBody.data.createProgram.id;
+                    if (!testData.title.isEmpty()) {
+                        JsonHelper.saveIdToJson(FilePaths.TRAINING_DATA_JSON, trainingId, testData.title, null, null);
                     }
-                    
-                    System.out.println("✓ Training created successfully: " + testData.scenario);
+                    System.out.println("✓ Training created: " + trainingId);
                 } else if ("FAIL".equalsIgnoreCase(testData.expectedResult)) {
-                    // Verify training creation fails (should have errors)
-                    Assert.assertTrue(responseBody.contains("errors") || !responseBody.contains("\"createProgram\""),
-                        "Training creation should fail for scenario: " + testData.scenario);
-                    
-                    System.out.println("✓ Training creation failed as expected: " + testData.scenario);
+                    Assert.assertTrue(hasGraphQLErrors || responseBody.data == null || responseBody.data.createProgram == null,
+                        "Creation should have failed: " + testData.scenario);
+                    System.out.println("✓ Failure confirmed as expected");
                 }
             } catch (Exception e) {
                 if ("FAIL".equalsIgnoreCase(testData.expectedResult)) {
-                    System.out.println("Expected failure for: " + testData.scenario + " - " + e.getMessage());
+                    System.out.println("Expected failure: " + e.getMessage());
                 } else {
                     throw e;
                 }
             }
         } else {
-            // If status code is not 200, the request failed
-            if ("FAIL".equalsIgnoreCase(testData.expectedResult)) {
-                System.out.println("Test expected to fail and it did with status: " + response.statusCode());
-            } else {
-                System.out.println("Scenario: " + testData.scenario + " - Status: " + response.statusCode());
+            if (!"FAIL".equalsIgnoreCase(testData.expectedResult)) {
+                System.out.println("Unexpected status: " + response.statusCode());
             }
-        }
-    }
-
-    private String extractTrainingId(String responseBody) {
-        try {
-            // Extract ID from JSON response: {"data":{"createProgram":{"id":"uuid-here",...}}}
-            int idStart = responseBody.indexOf("\"id\":\"") + 6;
-            int idEnd = responseBody.indexOf("\"", idStart);
-            if (idStart > 5 && idEnd > idStart) {
-                return responseBody.substring(idStart, idEnd);
-            }
-        } catch (Exception e) {
-            System.out.println("Failed to extract training ID: " + e.getMessage());
-        }
-        return null;
-    }
-
-    private void saveTrainingIdToJson(String trainingId, String trainingTitle) {
-        try {
-            String filePath = "src/test/resources/training-data/training-id.json";
-            FileWriter file = new FileWriter(filePath);
-            file.write("{\"id\":\"" + trainingId + "\",\"title\":\"" + trainingTitle + "\",\"timestamp\":" + System.currentTimeMillis() + "}");
-            file.close();
-            
-            System.out.println("✓ Training ID saved to JSON file: " + filePath);
-            System.out.println("✓ Training ID: " + trainingId + " (Title: " + trainingTitle + ")");
-            
-        } catch (IOException e) {
-            System.out.println("⚠ Failed to save training ID to JSON: " + e.getMessage());
         }
     }
 }

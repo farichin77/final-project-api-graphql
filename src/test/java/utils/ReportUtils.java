@@ -177,8 +177,8 @@ public class ReportUtils {
      */
     public static String createSummaryTable(int total, int passed, int failed, int skipped) {
         StringBuilder table = new StringBuilder();
-        table.append("<table border='1' style='border-collapse: collapse; width: 100%;'>");
-        table.append("<tr style='background-color: #f2f2f2;'>");
+        table.append("<table border='1' style='border-collapse: collapse; width: 100%; color: #e0e0e0; border-color: #444;'>");
+        table.append("<tr style='background-color: #333;'>");
         table.append("<th style='padding: 8px; text-align: left;'>Metric</th>");
         table.append("<th style='padding: 8px; text-align: left;'>Count</th>");
         table.append("<th style='padding: 8px; text-align: left;'>Percentage</th>");

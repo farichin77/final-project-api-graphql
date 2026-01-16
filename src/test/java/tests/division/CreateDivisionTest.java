@@ -8,106 +8,60 @@ import client.GraphQlClient;
 import utils.CsvReader;
 import utils.TestDataProvider;
 import utils.GraphQlFileReader;
+import utils.JsonHelper;
+import utils.FilePaths;
+import models.requests.division.CreateDivisionVariable;
+import models.responses.division.CreateDivisionResponse;
 import io.restassured.response.Response;
 
 import java.util.Map;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class CreateDivisionTest extends BaseTest {
 
     @Test(dataProvider = "divisionTestData", dataProviderClass = TestDataProvider.class)
     public void testCreateDivisionWithDataDriven(CsvReader.DivisionTestData testData) {
-        // First authenticate to get valid session
         AuthService.postLogin();
 
-        // Prepare variables for division creation
-        Map<String, Object> variables = Map.of(
-            "input", Map.of(
-                "name", testData.name,
-                "description", testData.description
-            )
-        );
-
+        Map<String, Object> variables = CreateDivisionVariable.variables(testData.name, testData.description);
         String query = GraphQlFileReader.readMutation("CreateDivision.graphql");
-
         Response response = GraphQlClient.execute(query, variables);
         
-        System.out.println("Test Scenario: " + testData.scenario);
+        System.out.println("Scenario: " + testData.scenario);
+        System.out.println("Variables: " + variables);
         System.out.println("Response Status: " + response.statusCode());
         System.out.println("Response Body: " + response.asString());
 
         if (response.statusCode() == 200) {
             try {
-                // Parse response manually since we don't have response classes
-                String responseBody = response.getBody().asString();
+                CreateDivisionResponse responseBody = response.as(CreateDivisionResponse.class);
+                boolean hasGraphQLErrors = responseBody.errors != null && !responseBody.errors.isEmpty();
                 
                 if ("SUCCESS".equalsIgnoreCase(testData.expectedResult)) {
-                    // Verify successful division creation
-                    Assert.assertFalse(responseBody.contains("errors"), 
-                        "Response should not have GraphQL errors for scenario: " + testData.scenario);
-                    Assert.assertTrue(responseBody.contains("\"createDivision\""), 
-                        "Response should contain createDivision for scenario: " + testData.scenario);
-                    Assert.assertTrue(responseBody.contains("\"name\":\"" + testData.name + "\""), 
-                        "Response should contain division name for scenario: " + testData.scenario);
+                    Assert.assertFalse(hasGraphQLErrors, "Response has GraphQL errors: " + testData.scenario);
+                    Assert.assertNotNull(responseBody.data, "Response data is null");
+                    Assert.assertNotNull(responseBody.data.createDivision, "createDivision object is null");
                     
-                    // Extract division ID and save to JSON
-                    String divisionId = extractDivisionId(responseBody);
+                    String divisionId = responseBody.data.createDivision.id;
                     if (divisionId != null && !testData.name.isEmpty()) {
-                        saveDivisionIdToJson(divisionId, testData.name);
+                        JsonHelper.saveIdToJson(FilePaths.DIVISION_DATA_JSON, divisionId, testData.name, null, null);
                     }
-                    
-                    System.out.println("✓ Division created successfully: " + testData.scenario);
+                    System.out.println("✓ Division created: " + divisionId);
                 } else if ("FAIL".equalsIgnoreCase(testData.expectedResult)) {
-                    // Verify division creation fails (should have errors)
-                    Assert.assertTrue(responseBody.contains("errors") || !responseBody.contains("\"createDivision\""),
-                        "Division creation should fail for scenario: " + testData.scenario);
-                    
-                    System.out.println("✓ Division creation failed as expected: " + testData.scenario);
+                    Assert.assertTrue(hasGraphQLErrors || responseBody.data == null || responseBody.data.createDivision == null,
+                        "Creation should have failed: " + testData.scenario);
+                    System.out.println("✓ Failure confirmed as expected");
                 }
             } catch (Exception e) {
                 if ("FAIL".equalsIgnoreCase(testData.expectedResult)) {
-                    System.out.println("Expected failure for: " + testData.scenario + " - " + e.getMessage());
+                    System.out.println("Expected failure: " + e.getMessage());
                 } else {
                     throw e;
                 }
             }
         } else {
-            // If status code is not 200, the request failed
-            if ("FAIL".equalsIgnoreCase(testData.expectedResult)) {
-                System.out.println("Test expected to fail and it did with status: " + response.statusCode());
-            } else {
-                System.out.println("Scenario: " + testData.scenario + " - Status: " + response.statusCode());
+            if (!"FAIL".equalsIgnoreCase(testData.expectedResult)) {
+                Assert.fail("Request failed with status: " + response.statusCode());
             }
-        }
-    }
-
-    private String extractDivisionId(String responseBody) {
-        try {
-            // Extract ID from JSON response: {"data":{"createDivision":{"id":"uuid-here",...}}}
-            int idStart = responseBody.indexOf("\"id\":\"") + 6;
-            int idEnd = responseBody.indexOf("\"", idStart);
-            if (idStart > 5 && idEnd > idStart) {
-                return responseBody.substring(idStart, idEnd);
-            }
-        } catch (Exception e) {
-            System.out.println("Failed to extract division ID: " + e.getMessage());
-        }
-        return null;
-    }
-
-    private void saveDivisionIdToJson(String divisionId, String divisionName) {
-        try {
-            String filePath = "src/test/resources/employee-data/division-id.json";
-            FileWriter file = new FileWriter(filePath);
-            file.write("{\"id\":\"" + divisionId + "\",\"name\":\"" + divisionName + "\",\"timestamp\":" + System.currentTimeMillis() + "}");
-            file.close();
-            
-            System.out.println("✓ Division ID saved to JSON file: " + filePath);
-            System.out.println("✓ Division ID: " + divisionId + " (Name: " + divisionName + ")");
-            
-        } catch (IOException e) {
-            System.out.println("⚠ Failed to save division ID to JSON: " + e.getMessage());
         }
     }
 }

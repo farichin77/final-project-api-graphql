@@ -42,11 +42,11 @@ public class ExtentReportListener implements ITestListener {
         
         // Add test metadata with professional formatting
         String testInfo = "<details><summary><b>Test Information</b></summary>" +
-                         "<table border='1' style='border-collapse: collapse; width: 100%;'>" +
-                         "<tr><td style='padding: 8px; background-color: #f5f5f5;'><b>Test Name</b></td><td style='padding: 8px;'>" + testName + "</td></tr>" +
-                         "<tr><td style='padding: 8px; background-color: #f5f5f5;'><b>Category</b></td><td style='padding: 8px;'>" + category + "</td></tr>" +
-                         "<tr><td style='padding: 8px; background-color: #f5f5f5;'><b>Test Class</b></td><td style='padding: 8px;'>" + result.getTestClass().getName() + "</td></tr>" +
-                         "<tr><td style='padding: 8px; background-color: #f5f5f5;'><b>Priority</b></td><td style='padding: 8px;'>" + getPriority(result) + "</td></tr>" +
+                         "<table border='1' style='border-collapse: collapse; width: 100%; color: #e0e0e0; border-color: #444;'>" +
+                         "<tr><td style='padding: 8px; background-color: #333;'><b>Test Name</b></td><td style='padding: 8px;'>" + testName + "</td></tr>" +
+                         "<tr><td style='padding: 8px; background-color: #333;'><b>Category</b></td><td style='padding: 8px;'>" + category + "</td></tr>" +
+                         "<tr><td style='padding: 8px; background-color: #333;'><b>Test Class</b></td><td style='padding: 8px;'>" + result.getTestClass().getName() + "</td></tr>" +
+                         "<tr><td style='padding: 8px; background-color: #333;'><b>Priority</b></td><td style='padding: 8px;'>" + getPriority(result) + "</td></tr>" +
                          "</table></details>";
         
         ExtentManager.getTest().info(testInfo);
@@ -63,7 +63,7 @@ public class ExtentReportListener implements ITestListener {
             // Extract scenario from test data parameter
             String scenario = extractScenarioFromParameter(parameters[0]);
             if (scenario != null && !scenario.isEmpty()) {
-                String scenarioInfo = "<div style='background-color: #f0f8ff; padding: 8px; border-radius: 3px; border-left: 4px solid #0066cc; margin-top: 10px;'>" +
+                String scenarioInfo = "<div style='background-color: #1e3a5f; color: #ffffff; padding: 8px; border-radius: 3px; border-left: 4px solid #0066cc; margin-top: 10px;'>" +
                                      "<b>Test Scenario:</b> " + scenario +
                                      "</div>";
                 ExtentManager.getTest().info(scenarioInfo);
@@ -91,12 +91,12 @@ public class ExtentReportListener implements ITestListener {
         
         // Add success summary with scenario
         String scenario = extractScenarioFromTestResult(result);
-        String successSummary = "<div style='background-color: #f0f8ff; padding: 10px; border-radius: 3px; border-left: 4px solid #0066cc;'>" +
+        String successSummary = "<div style='background-color: #1a3a1a; color: #ffffff; padding: 10px; border-radius: 3px; border-left: 4px solid #28a745;'>" +
                                "<b>Success Summary:</b><br>" +
                                "Test: " + testName + "<br>" +
                                "Category: " + category + "<br>" +
                                (scenario != null ? "Scenario: " + scenario + "<br>" : "") +
-                               "Status: <span style='color: #0066cc; font-weight: bold;'>PASSED</span>" +
+                               "Status: <span style='color: #28a745; font-weight: bold;'>PASSED</span>" +
                                "</div>";
         ExtentManager.getTest().info(successSummary);
         
@@ -123,7 +123,7 @@ public class ExtentReportListener implements ITestListener {
         
         // Add failure summary with scenario and professional styling
         String scenario = extractScenarioFromTestResult(result);
-        String failureSummary = "<div style='background-color: #fff5f5; padding: 10px; border-radius: 3px; border-left: 4px solid #dc3545;'>" +
+        String failureSummary = "<div style='background-color: #4a1a1a; color: #ffffff; padding: 10px; border-radius: 3px; border-left: 4px solid #dc3545;'>" +
                                "<b>Failure Summary:</b><br>" +
                                "Test: " + testName + "<br>" +
                                "Category: " + category + "<br>" +
@@ -146,7 +146,7 @@ public class ExtentReportListener implements ITestListener {
             // Add custom error analysis for common issues
             String errorAnalysis = analyzeError(result.getThrowable().getMessage());
             if (errorAnalysis != null) {
-                String analysisBox = "<div style='background-color: #fff9e6; padding: 10px; border-radius: 3px; border-left: 4px solid #ff9800;'>" +
+                String analysisBox = "<div style='background-color: #3d2b1f; color: #ffffff; padding: 10px; border-radius: 3px; border-left: 4px solid #ff9800;'>" +
                                      "<b>Error Analysis:</b><br>" + errorAnalysis +
                                      "</div>";
                 ExtentManager.getTest().info(analysisBox);
@@ -171,7 +171,7 @@ public class ExtentReportListener implements ITestListener {
         
         // Add skip summary with scenario and professional styling
         String scenario = extractScenarioFromTestResult(result);
-        String skipSummary = "<div style='background-color: #fff9e6; padding: 10px; border-radius: 3px; border-left: 4px solid #ff9800;'>" +
+        String skipSummary = "<div style='background-color: #3d2b1f; color: #ffffff; padding: 10px; border-radius: 3px; border-left: 4px solid #ff9800;'>" +
                              "<b>Skip Summary:</b><br>" +
                              "Test: " + testName + "<br>" +
                              "Category: " + category + "<br>" +
@@ -197,7 +197,7 @@ public class ExtentReportListener implements ITestListener {
         
         // Add partial failure summary with scenario
         String scenario = extractScenarioFromTestResult(result);
-        String partialSummary = "<div style='background-color: #fff9e6; padding: 10px; border-radius: 3px; border-left: 4px solid #ff9800;'>" +
+        String partialSummary = "<div style='background-color: #3d2b1f; color: #ffffff; padding: 10px; border-radius: 3px; border-left: 4px solid #ff9800;'>" +
                                "<b>Partial Failure Summary:</b><br>" +
                                "Test: " + testName + "<br>" +
                                "Category: " + category + "<br>" +
