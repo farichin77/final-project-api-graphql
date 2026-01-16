@@ -1,0 +1,11 @@
+mutation updateContent($id: String!, $input: ContentInput!) {
+  updateContent(id: $id, input: $input) {
+    id
+    title
+    description
+    order
+    chapterId
+    type
+    __typename
+  }
+}

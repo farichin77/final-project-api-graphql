@@ -1,0 +1,9 @@
+mutation updateDivision($id: String!, $input: DivisionInput!) {
+  updateDivision(id: $id, input: $input) {
+    id
+    code
+    name
+    description
+    __typename
+  }
+}

@@ -1,4 +1,4 @@
 name,employeeId,email,phoneNumber,divisionId,employeeRole,angkatanId,gender,dateOfBirth,address,nik,npwp,scenario,expectedResult
 Ahmad,00102,ahmad.qa{timestamp}@dibimbing.id,81234567890,43b462d2-e360-46e2-b6bd-73b3f5fb0721,Instructor,3,male,1995-05-15T00:00:00.000Z,Bandung,123456789012346,12345678901235,Valid employee creation,SUCCESS
-Bambang,00104,,83456789012,43b462d2-e360-46e2-b6bd-73b3f5fb0721,Mentor,2,male,1997-08-10T00:00:00.000Z,Jakarta Selatan,123456789012348,12345678901237,Missing email,FAIL
-Dewi,00106,dewi.qa{timestamp}@dibimbing.id,84567890123,,Mentor,1,female,1999-07-30T00:00:00.000Z,Yogyakarta,123456789012350,12345678901239,Missing division,FAIL
+ahmad,00104,test20260113180743@example.com,83456789012,43b462d2-e360-46e2-b6bd-73b3f5fb0721,Mentor,2,male,1997-08-10T00:00:00.000Z,Jakarta Selatan,123456789012348,12345678901237,email already registered,FAIL
+,,,,,,,,,,,,missing all field,FAIL

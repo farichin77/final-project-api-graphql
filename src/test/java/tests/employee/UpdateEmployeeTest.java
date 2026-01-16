@@ -2,12 +2,12 @@ package tests.employee;
 
 import core.BaseTest;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import services.AuthService;
 import client.GraphQlClient;
 import utils.CsvReader;
-import utils.CsvReader.UpdateEmployeeTestData;
+import utils.TestDataProvider;
+import utils.GraphQlFileReader;
 import io.restassured.response.Response;
 
 import java.util.Map;
@@ -18,19 +18,8 @@ import java.io.IOException;
 
 public class UpdateEmployeeTest extends BaseTest {
 
-
-    @DataProvider(name = "updateEmployeeTestData")
-    public Object[][] getUpdateEmployeeTestData() {
-        var testDataList = CsvReader.readUpdateEmployeeTestData("test-data/update-employee-test.csv");
-        Object[][] data = new Object[testDataList.size()][1];
-        for (int i = 0; i < testDataList.size(); i++) {
-            data[i][0] = testDataList.get(i);
-        }
-        return data;
-    }
-
-    @Test(dataProvider = "updateEmployeeTestData")
-    public void testUpdateEmployeeWithDataDriven(UpdateEmployeeTestData testData) {
+    @Test(dataProvider = "updateEmployeeTestData", dataProviderClass = TestDataProvider.class)
+    public void testUpdateEmployeeWithDataDriven(CsvReader.UpdateEmployeeTestData testData) {
         // First authenticate to get valid session
         AuthService.postLogin();
         
@@ -43,17 +32,20 @@ public class UpdateEmployeeTest extends BaseTest {
         // Replace placeholder with actual employee ID
         String actualId = testData.id.equals("{lastCreatedId}") ? employeeId : testData.id;
         
+        // Replace timestamp placeholder in email
+        String processedEmail = testData.email.replace("{timestamp}", String.valueOf(System.currentTimeMillis()));
+        
         System.out.println("=== Updating Employee ===");
         System.out.println("Test Scenario: " + testData.scenario);
         System.out.println("Employee ID: " + actualId);
         System.out.println("New Name: " + testData.name);
-        System.out.println("New Email: " + testData.email);
+        System.out.println("New Email: " + processedEmail);
 
         // Prepare variables for employee update
         Map<String, Object> inputMap = new HashMap<>();
         inputMap.put("name", testData.name);
         inputMap.put("employeeId", testData.employeeId);
-        inputMap.put("email", testData.email);
+        inputMap.put("email", processedEmail);
         inputMap.put("phoneNumber", testData.phoneNumber);
         inputMap.put("divisionId", testData.divisionId);
         inputMap.put("employeeRole", testData.employeeRole);
@@ -68,12 +60,7 @@ public class UpdateEmployeeTest extends BaseTest {
         variables.put("id", actualId);
         variables.put("input", inputMap);
 
-        String query = "mutation updateEmployee($input: EmployeeInput!, $id: String!) {\n" +
-            "  updateEmployee(input: $input, id: $id) {\n" +
-            "    id\n" +
-            "    __typename\n" +
-            "  }\n" +
-            "}";
+        String query = GraphQlFileReader.readMutation("UpdateEmployee.graphql");
 
         Response response = GraphQlClient.execute(query, variables);
         
@@ -120,18 +107,104 @@ public class UpdateEmployeeTest extends BaseTest {
 
     private String getEmployeeIdFromJson() {
         try {
+            String filePath = "src/test/resources/employee-data/employee-id.json";
+            StringBuilder jsonContent = new StringBuilder();
+            
+            // Read entire file
+            try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    jsonContent.append(line);
+                }
+            } catch (Exception e) {
+                System.out.println("⚠ JSON file not found: " + e.getMessage());
+                // Fallback to TXT file
+                return getEmployeeIdFromTxt();
+            }
+            
+            String content = jsonContent.toString().trim();
+            if (content.isEmpty()) {
+                // Fallback to TXT file
+                return getEmployeeIdFromTxt();
+            }
+            
+            // Parse JSON and get the latest employee ID
+            if (content.startsWith("[") && content.endsWith("]")) {
+                String arrayContent = content.substring(1, content.length() - 1);
+                String[] employeeObjects = arrayContent.split("\\},\\{");
+                
+                String latestEmployeeId = null;
+                long latestTimestamp = 0;
+                
+                for (String employeeObj : employeeObjects) {
+                    // Clean up object string
+                    if (!employeeObj.startsWith("{")) {
+                        employeeObj = "{" + employeeObj;
+                    }
+                    if (!employeeObj.endsWith("}")) {
+                        employeeObj = employeeObj + "}";
+                    }
+                    
+                    // Extract ID
+                    int idStart = employeeObj.indexOf("\"id\":\"");
+                    if (idStart != -1) {
+                        idStart += 6;
+                        int idEnd = employeeObj.indexOf("\"", idStart);
+                        if (idEnd != -1) {
+                            String employeeId = employeeObj.substring(idStart, idEnd);
+                            
+                            // Extract timestamp
+                            int timestampStart = employeeObj.indexOf("\"timestamp\":");
+                            if (timestampStart != -1) {
+                                timestampStart += 12;
+                                int timestampEnd = employeeObj.indexOf("}", timestampStart);
+                                if (timestampEnd != -1) {
+                                    try {
+                                        long timestamp = Long.parseLong(employeeObj.substring(timestampStart, timestampEnd));
+                                        if (timestamp > latestTimestamp) {
+                                            latestTimestamp = timestamp;
+                                            latestEmployeeId = employeeId;
+                                        }
+                                    } catch (NumberFormatException e) {
+                                        // Ignore timestamp parsing errors
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                if (latestEmployeeId != null) {
+                    System.out.println("✓ Found latest employee ID from JSON: " + latestEmployeeId);
+                    return latestEmployeeId;
+                } else {
+                    // Fallback to TXT file
+                    return getEmployeeIdFromTxt();
+                }
+            }
+            
+        } catch (Exception e) {
+            System.out.println("⚠ Failed to read latest employee ID from JSON: " + e.getMessage());
+            // Fallback to TXT file
+            return getEmployeeIdFromTxt();
+        }
+        return null;
+    }
+
+    private String getEmployeeIdFromTxt() {
+        try {
             String filePath = "src/test/resources/employee-data/employee-id.txt";
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
             String employeeId = reader.readLine();
             reader.close();
             
             if (employeeId != null && !employeeId.trim().isEmpty()) {
-                System.out.println("✓ Read employee ID from file: " + employeeId);
+                System.out.println("✓ Read employee ID from TXT file: " + employeeId);
                 return employeeId;
             }
             
         } catch (IOException e) {
-            System.out.println("⚠ Failed to read employee ID from file: " + e.getMessage());
+            System.out.println("⚠ Failed to read employee ID from TXT file: " + e.getMessage());
         }
         return null;
     }

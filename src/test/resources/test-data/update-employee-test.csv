@@ -1,2 +1,2 @@
 id,name,employeeId,email,phoneNumber,divisionId,employeeRole,angkatanId,gender,dateOfBirth,address,nik,npwp,scenario,expectedResult
-{lastCreatedId},ahmaddd,EMP001,ahmad@example.com,08123456789,811637b1-9989-4d45-a9f5-220c5f2354f7,employee,1,male,1990-01-01,Jl. Updated Address,1234567890123456,12345678901234567890,Update valid employee,SUCCESS
+{lastCreatedId},ahmaddd,EMP001,ahmad.qa{timestamp}@dibimbing.id,08123456789,811637b1-9989-4d45-a9f5-220c5f2354f7,employee,1,male,1990-01-01,Jl. Updated Address,1234567890123456,12345678901234567890,Update valid employee,SUCCESS

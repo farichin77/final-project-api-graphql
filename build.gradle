@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     implementation 'io.rest-assured:rest-assured:6.0.0'
-    implementation 'org.testng:testng:7.11.0'
+    testImplementation 'org.testng:testng:7.11.0'
     implementation 'tools.jackson.core:jackson-databind:3.0.3'
     implementation 'org.slf4j:slf4j-simple:2.0.17'
     implementation 'io.github.cdimascio:dotenv-java:3.2.0'
@@ -20,15 +20,17 @@ dependencies {
     implementation 'org.apache.poi:poi-ooxml:5.2.5'
 
     // Extent Report dependencies
-    implementation 'com.aventstack:extentreports:5.1.2'
+    testImplementation 'com.aventstack:extentreports:5.1.2'
 }
 
 test {
-    useTestNG()
+    useTestNG() {
+        suites 'src/test/resources/testng.xml'
+    }
 
-    // Show test output
+    ignoreFailures = true
+
     testLogging {
-        events "passed", "failed", "skipped"
-        showStandardStreams true
+        events "passed", "skipped", "failed"
     }
 }

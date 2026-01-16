@@ -1,18 +1,17 @@
 package models.responses.user;
 
 public class MeResponse {
+    public Data data;
 
-  public Data data;
+    public static class Data {
+        public Me me;
+    }
 
-  public static class Data {
-    public User me;
-  }
-
-  public static class User {
-    public String id;
-    public String name;
-    public String email;
-    public String phoneNumber;
-    public String role;
-  }
+    public static class Me {
+        public String id;
+        public String name;
+        public String email;
+        public String phoneNumber;
+        public String role;
+    }
 }

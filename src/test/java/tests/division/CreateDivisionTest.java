@@ -2,12 +2,12 @@ package tests.division;
 
 import core.BaseTest;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import services.AuthService;
 import client.GraphQlClient;
 import utils.CsvReader;
-import utils.CsvReader.DivisionTestData;
+import utils.TestDataProvider;
+import utils.GraphQlFileReader;
 import io.restassured.response.Response;
 
 import java.util.Map;
@@ -16,19 +16,8 @@ import java.io.IOException;
 
 public class CreateDivisionTest extends BaseTest {
 
-
-    @DataProvider(name = "divisionTestData")
-    public Object[][] getDivisionTestData() {
-        var testDataList = CsvReader.readDivisionTestData("test-data/division-test.csv");
-        Object[][] data = new Object[testDataList.size()][1];
-        for (int i = 0; i < testDataList.size(); i++) {
-            data[i][0] = testDataList.get(i);
-        }
-        return data;
-    }
-
-    @Test(dataProvider = "divisionTestData")
-    public void testCreateDivisionWithDataDriven(DivisionTestData testData) {
+    @Test(dataProvider = "divisionTestData", dataProviderClass = TestDataProvider.class)
+    public void testCreateDivisionWithDataDriven(CsvReader.DivisionTestData testData) {
         // First authenticate to get valid session
         AuthService.postLogin();
 
@@ -40,15 +29,7 @@ public class CreateDivisionTest extends BaseTest {
             )
         );
 
-        String query = "mutation createDivision($input: DivisionInput!) {\n" +
-            "  createDivision(input: $input) {\n" +
-            "    id\n" +
-            "    code\n" +
-            "    name\n" +
-            "    description\n" +
-            "    __typename\n" +
-            "  }\n" +
-            "}";
+        String query = GraphQlFileReader.readMutation("CreateDivision.graphql");
 
         Response response = GraphQlClient.execute(query, variables);
         

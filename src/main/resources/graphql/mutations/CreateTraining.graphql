@@ -1,0 +1,6 @@
+mutation CreateProgram($input: ProgramInput!) {
+  createProgram(input: $input) {
+    id
+    __typename
+  }
+}

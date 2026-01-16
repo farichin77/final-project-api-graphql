@@ -2,12 +2,12 @@ package tests.division;
 
 import core.BaseTest;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import services.AuthService;
 import client.GraphQlClient;
 import utils.CsvReader;
-import utils.CsvReader.UpdateDivisionTestData;
+import utils.TestDataProvider;
+import utils.GraphQlFileReader;
 import io.restassured.response.Response;
 
 import java.util.Map;
@@ -17,19 +17,8 @@ import java.io.IOException;
 
 public class UpdateDivisionTest extends BaseTest {
 
-
-    @DataProvider(name = "updateDivisionTestData")
-    public Object[][] getUpdateDivisionTestData() {
-        var testDataList = CsvReader.readUpdateDivisionTestData("test-data/update-division-test.csv");
-        Object[][] data = new Object[testDataList.size()][1];
-        for (int i = 0; i < testDataList.size(); i++) {
-            data[i][0] = testDataList.get(i);
-        }
-        return data;
-    }
-
-    @Test(dataProvider = "updateDivisionTestData")
-    public void testUpdateDivisionWithDataDriven(UpdateDivisionTestData testData) {
+    @Test(dataProvider = "updateDivisionTestData", dataProviderClass = TestDataProvider.class)
+    public void testUpdateDivisionWithDataDriven(CsvReader.UpdateDivisionTestData testData) {
         // First authenticate to get valid session
         AuthService.postLogin();
         
@@ -57,12 +46,7 @@ public class UpdateDivisionTest extends BaseTest {
             )
         );
 
-        String query = "mutation updateDivision($id: String!, $input: DivisionInput!) {\n" +
-            "  updateDivision(id: $id, input: $input) {\n" +
-            "    id\n" +
-            "    __typename\n" +
-            "  }\n" +
-            "}";
+        String query = GraphQlFileReader.readMutation("UpdateDivision.graphql");
 
         Response response = GraphQlClient.execute(query, variables);
         

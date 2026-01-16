@@ -1,0 +1,8 @@
+mutation updateProgram($id: String!, $input: ProgramInput!) {
+  updateProgram(id: $id, input: $input) {
+    id
+    title
+    description
+    __typename
+  }
+}

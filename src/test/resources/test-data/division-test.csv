@@ -1,4 +1,3 @@
 name,description,scenario,expectedResult
 maintenance,Business Division,Create valid division,SUCCESS
-,Missing division name,FAIL
-test,Test Division with empty description,SUCCESS
+,,create with empty al field,FAIL

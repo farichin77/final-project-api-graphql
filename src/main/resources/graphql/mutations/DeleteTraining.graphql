@@ -1,0 +1,3 @@
+mutation deleteProgram($id: String!) {
+  deleteProgram(id: $id)
+}

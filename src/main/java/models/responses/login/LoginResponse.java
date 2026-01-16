@@ -18,7 +18,7 @@ public class LoginResponse {
   public static class User {
     public String id;
     public String name;
-    public String email;
+    public String username; // Changed from email to username to match API response
     public String role;
     public String companyId;
   }

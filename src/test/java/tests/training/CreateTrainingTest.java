@@ -2,12 +2,12 @@ package tests.training;
 
 import core.BaseTest;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import services.AuthService;
 import client.GraphQlClient;
 import utils.CsvReader;
-import utils.CsvReader.TrainingTestData;
+import utils.TestDataProvider;
+import utils.GraphQlFileReader;
 import io.restassured.response.Response;
 
 import java.util.Map;
@@ -17,19 +17,8 @@ import java.io.IOException;
 
 public class CreateTrainingTest extends BaseTest {
 
-
-    @DataProvider(name = "trainingTestData")
-    public Object[][] getTrainingTestData() {
-        var testDataList = CsvReader.readTrainingTestData("test-data/training-test.csv");
-        Object[][] data = new Object[testDataList.size()][1];
-        for (int i = 0; i < testDataList.size(); i++) {
-            data[i][0] = testDataList.get(i);
-        }
-        return data;
-    }
-
-    @Test(dataProvider = "trainingTestData")
-    public void testCreateTrainingWithDataDriven(TrainingTestData testData) {
+    @Test(dataProvider = "trainingTestData", dataProviderClass = TestDataProvider.class)
+    public void testCreateTrainingWithDataDriven(CsvReader.TrainingTestData testData) {
         // First authenticate to get valid session
         AuthService.postLogin();
 
@@ -43,12 +32,7 @@ public class CreateTrainingTest extends BaseTest {
         Map<String, Object> variables = new HashMap<>();
         variables.put("input", inputMap);
 
-        String query = "mutation createProgram($input: ProgramInput!) {\n" +
-            "  createProgram(input: $input) {\n" +
-            "    id\n" +
-            "    __typename\n" +
-            "  }\n" +
-            "}";
+        String query = GraphQlFileReader.readMutation("CreateTraining.graphql");
 
         Response response = GraphQlClient.execute(query, variables);
         

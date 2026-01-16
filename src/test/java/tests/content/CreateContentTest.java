@@ -2,14 +2,12 @@ package tests.content;
 
 import core.BaseTest;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import client.AuthSession;
 import services.AuthService;
 import client.GraphQlClient;
 import utils.CsvReader;
-import utils.CsvReader.ContentTestData;
+import utils.TestDataProvider;
+import utils.GraphQlFileReader;
 import io.restassured.response.Response;
 
 import java.util.Map;
@@ -21,20 +19,30 @@ import java.io.BufferedReader;
 
 public class CreateContentTest extends BaseTest {
 
-    @DataProvider(name = "contentTestData")
-    public Object[][] getContentTestData() {
-        var testDataList = CsvReader.readContentTestData("test-data/content-test.csv");
-        Object[][] data = new Object[testDataList.size()][1];
-        for (int i = 0; i < testDataList.size(); i++) {
-            data[i][0] = testDataList.get(i);
-        }
-        return data;
-    }
-
-    @Test(dataProvider = "contentTestData")
-    public void testCreateContentWithDataDriven(ContentTestData testData) {
+    @Test(dataProvider = "contentTestData", dataProviderClass = TestDataProvider.class)
+    public void testCreateContentWithDataDriven(CsvReader.ContentTestData testData) {
         // First authenticate to get valid session
         AuthService.postLogin();
+
+        // Get latest training ID from JSON
+        String latestTrainingId = getLatestTrainingIdFromJson();
+        if (latestTrainingId == null) {
+            Assert.fail("No training ID found in JSON file. Run CreateTrainingTest first.");
+        }
+
+        // Get latest chapter ID from the latest training
+        String latestChapterId = getLatestChapterIdFromTraining(latestTrainingId);
+        if (latestChapterId == null) {
+            Assert.fail("No chapter ID found for training " + latestTrainingId + ". Run CreateChapterTest first.");
+        }
+
+        // Replace placeholder with actual chapter ID
+        String actualChapterId = testData.chapterId.equals("{latestChapterId}") ? latestChapterId : testData.chapterId;
+
+        System.out.println("=== Creating Content ===");
+        System.out.println("Test Scenario: " + testData.scenario);
+        System.out.println("Training ID: " + latestTrainingId);
+        System.out.println("Chapter ID: " + actualChapterId);
 
         // Prepare variables for content creation
         Map<String, Object> inputMap = new HashMap<>();
@@ -43,7 +51,7 @@ public class CreateContentTest extends BaseTest {
         inputMap.put("order", testData.order);
         inputMap.put("article", testData.article);
         inputMap.put("articleType", testData.articleType);
-        inputMap.put("chapterId", testData.chapterId);
+        inputMap.put("chapterId", actualChapterId);
         inputMap.put("duration", testData.duration);
         inputMap.put("isRandomQuestion", testData.isRandomQuestion);
         inputMap.put("mediaId", testData.mediaId);
@@ -53,12 +61,7 @@ public class CreateContentTest extends BaseTest {
         Map<String, Object> variables = new HashMap<>();
         variables.put("input", inputMap);
 
-        String query = "mutation createContent($input: ContentInput!) {\n" +
-            "  createContent(input: $input) {\n" +
-            "    id\n" +
-            "    __typename\n" +
-            "  }\n" +
-            "}";
+        String query = GraphQlFileReader.readMutation("CreateContent.graphql");
 
         Response response = GraphQlClient.execute(query, variables);
         
@@ -182,5 +185,184 @@ public class CreateContentTest extends BaseTest {
         } catch (IOException e) {
             System.out.println("Failed to save content ID to JSON: " + e.getMessage());
         }
+    }
+
+    private String getLatestTrainingIdFromJson() {
+        try {
+            String filePath = "src/test/resources/training-data/training-id.json";
+            StringBuilder jsonContent = new StringBuilder();
+            
+            // Read entire file
+            try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    jsonContent.append(line);
+                }
+            } catch (Exception e) {
+                System.out.println("⚠ Training JSON file not found: " + e.getMessage());
+                return null;
+            }
+            
+            String content = jsonContent.toString().trim();
+            if (content.isEmpty()) {
+                return null;
+            }
+            
+            // Handle both array and single object format
+            if (content.startsWith("[") && content.endsWith("]")) {
+                // Array format: [{"id":"uuid","title":"...","timestamp":123}]
+                String arrayContent = content.substring(1, content.length() - 1);
+                String[] trainingObjects = arrayContent.split("\\},\\{");
+                
+                String latestTrainingId = null;
+                long latestTimestamp = 0;
+                
+                for (String trainingObj : trainingObjects) {
+                    // Clean up object string
+                    if (!trainingObj.startsWith("{")) {
+                        trainingObj = "{" + trainingObj;
+                    }
+                    if (!trainingObj.endsWith("}")) {
+                        trainingObj = trainingObj + "}";
+                    }
+                    
+                    // Extract ID
+                    int idStart = trainingObj.indexOf("\"id\":\"");
+                    if (idStart != -1) {
+                        idStart += 6;
+                        int idEnd = trainingObj.indexOf("\"", idStart);
+                        if (idEnd != -1) {
+                            String trainingId = trainingObj.substring(idStart, idEnd);
+                            
+                            // Extract timestamp
+                            int timestampStart = trainingObj.indexOf("\"timestamp\":");
+                            if (timestampStart != -1) {
+                                timestampStart += 12;
+                                int timestampEnd = trainingObj.indexOf("}", timestampStart);
+                                if (timestampEnd != -1) {
+                                    try {
+                                        long timestamp = Long.parseLong(trainingObj.substring(timestampStart, timestampEnd));
+                                        if (timestamp > latestTimestamp) {
+                                            latestTimestamp = timestamp;
+                                            latestTrainingId = trainingId;
+                                        }
+                                    } catch (NumberFormatException e) {
+                                        // Ignore timestamp parsing errors
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                System.out.println("✓ Found latest training ID: " + latestTrainingId);
+                return latestTrainingId;
+                
+            } else if (content.startsWith("{") && content.endsWith("}")) {
+                // Single object format: {"id":"uuid","title":"...","timestamp":123}
+                int idStart = content.indexOf("\"id\":\"");
+                if (idStart != -1) {
+                    idStart += 6;
+                    int idEnd = content.indexOf("\"", idStart);
+                    if (idEnd != -1) {
+                        String trainingId = content.substring(idStart, idEnd);
+                        System.out.println("✓ Found training ID from single object: " + trainingId);
+                        return trainingId;
+                    }
+                }
+            }
+            
+        } catch (Exception e) {
+            System.out.println("⚠ Failed to read latest training ID from JSON: " + e.getMessage());
+        }
+        return null;
+    }
+
+    private String getLatestChapterIdFromTraining(String trainingId) {
+        try {
+            String filePath = "src/test/resources/chapter-data/chapter-id.json";
+            StringBuilder jsonContent = new StringBuilder();
+            
+            // Read entire file
+            try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    jsonContent.append(line);
+                }
+            } catch (Exception e) {
+                System.out.println("⚠ Chapter JSON file not found: " + e.getMessage());
+                return null;
+            }
+            
+            String content = jsonContent.toString().trim();
+            if (content.isEmpty()) {
+                return null;
+            }
+            
+            // Simple approach: find all chapters with the training ID
+            int searchIndex = 0;
+            String latestChapterId = null;
+            long latestTimestamp = 0;
+            
+            while (searchIndex < content.length()) {
+                // Find programId field
+                int programIdStart = content.indexOf("\"programId\":\"" + trainingId + "\"", searchIndex);
+                if (programIdStart == -1) {
+                    break; // No more matches
+                }
+                
+                // Find the chapter object that contains this programId
+                int objStart = content.lastIndexOf("{", programIdStart);
+                int objEnd = content.indexOf("}", programIdStart);
+                
+                if (objStart != -1 && objEnd != -1 && objEnd > objStart) {
+                    String chapterObj = content.substring(objStart, objEnd + 1);
+                    
+                    // Extract chapter ID from this object
+                    int idStart = chapterObj.indexOf("\"id\":\"");
+                    if (idStart != -1) {
+                        idStart += 6; // length of "id":"
+                        int idEnd = chapterObj.indexOf("\"", idStart);
+                        if (idEnd != -1) {
+                            String chapterId = chapterObj.substring(idStart, idEnd);
+                            
+                            // Extract timestamp to find the latest
+                            int timestampStart = chapterObj.indexOf("\"timestamp\":");
+                            if (timestampStart != -1) {
+                                timestampStart += 12;
+                                int timestampEnd = chapterObj.indexOf("}", timestampStart);
+                                if (timestampEnd != -1) {
+                                    try {
+                                        long timestamp = Long.parseLong(chapterObj.substring(timestampStart, timestampEnd));
+                                        if (timestamp > latestTimestamp) {
+                                            latestTimestamp = timestamp;
+                                            latestChapterId = chapterId;
+                                        }
+                                    } catch (NumberFormatException e) {
+                                        // Ignore timestamp parsing errors, use the chapter anyway
+                                        if (latestChapterId == null) {
+                                            latestChapterId = chapterId;
+                                        }
+                                    }
+                                }
+                            } else if (latestChapterId == null) {
+                                latestChapterId = chapterId;
+                            }
+                        }
+                    }
+                    
+                    searchIndex = objEnd + 1;
+                } else {
+                    break;
+                }
+            }
+            
+            System.out.println("✓ Found latest chapter ID: " + latestChapterId);
+            return latestChapterId;
+            
+        } catch (Exception e) {
+            System.out.println("⚠ Failed to read latest chapter ID from JSON: " + e.getMessage());
+        }
+        return null;
     }
 }

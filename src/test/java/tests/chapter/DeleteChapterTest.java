@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import services.AuthService;
 import client.GraphQlClient;
 import utils.CsvReader;
-import utils.CsvReader.DeleteChapterTestData;
+import utils.GraphQlFileReader;
 import io.restassured.response.Response;
 
 import java.util.ArrayList;
@@ -30,18 +30,25 @@ public class DeleteChapterTest extends BaseTest {
     }
 
     @Test(dataProvider = "deleteChapterTestData")
-    public void testDeleteChapterWithDataDriven(DeleteChapterTestData testData) {
+    public void testDeleteChapterWithDataDriven(CsvReader.DeleteChapterTestData testData) {
         // First authenticate to get valid session
         AuthService.postLogin();
         
-        // Get all chapter IDs from JSON file
-        List<String> chapterIds = getAllChapterIdsFromJson();
-        if (chapterIds.isEmpty()) {
-            Assert.fail("No chapter IDs found in JSON file. Run ChapterDataDrivenTest first.");
+        // Get latest training ID from JSON
+        String latestTrainingId = getLatestTrainingIdFromJson();
+        if (latestTrainingId == null) {
+            Assert.fail("No training ID found in JSON file. Run CreateTrainingTest first.");
         }
         
-        System.out.println("=== Deleting All Chapters ===");
+        // Get chapters created from the latest training
+        List<String> chapterIds = getChaptersByTrainingId(latestTrainingId);
+        if (chapterIds.isEmpty()) {
+            Assert.fail("No chapters found for training ID: " + latestTrainingId + ". Run CreateChapterTest first.");
+        }
+        
+        System.out.println("=== Deleting Chapters from Latest Training ===");
         System.out.println("Test Scenario: " + testData.scenario);
+        System.out.println("Training ID: " + latestTrainingId);
         System.out.println("Total chapters to delete: " + chapterIds.size());
         
         int deletedCount = 0;
@@ -50,7 +57,7 @@ public class DeleteChapterTest extends BaseTest {
             
             // Execute delete mutation
             Map<String, Object> variables = Map.of("id", chapterId);
-            String deletePayload = "mutation deleteChapter($id: String!) {\n  deleteChapter(id: $id)\n}";
+            String deletePayload = GraphQlFileReader.readMutation("DeleteChapter.graphql");
             Response deleteResponse = GraphQlClient.execute(deletePayload, variables);
 
             System.out.println("Delete Response Status: " + deleteResponse.statusCode());
@@ -73,8 +80,9 @@ public class DeleteChapterTest extends BaseTest {
         System.out.println("✓ Test completed - All chapter IDs read from JSON and deleted");
     }
 
-    private List<String> getAllChapterIdsFromJson() {
+    private List<String> getChaptersByTrainingId(String trainingId) {
         List<String> chapterIds = new ArrayList<>();
+        
         try {
             String filePath = "src/test/resources/chapter-data/chapter-id.json";
             StringBuilder jsonContent = new StringBuilder();
@@ -86,31 +94,33 @@ public class DeleteChapterTest extends BaseTest {
                     jsonContent.append(line);
                 }
             } catch (Exception e) {
-                System.out.println("⚠ File not found: " + e.getMessage());
+                System.out.println("⚠ Chapter JSON file not found: " + e.getMessage());
                 return chapterIds;
             }
             
             String content = jsonContent.toString().trim();
+            
             if (content.isEmpty()) {
                 return chapterIds;
             }
             
-            // Parse JSON manually
-            if (content.startsWith("[") && content.endsWith("]")) {
-                // Array format: [{"id":"uuid1",...},{"id":"uuid2",...}]
-                String arrayContent = content.substring(1, content.length() - 1);
-                String[] chapterObjects = arrayContent.split("\\},\\{");
+            // Simple approach: find all chapters with the training ID
+            int searchIndex = 0;
+            while (searchIndex < content.length()) {
+                // Find programId field
+                int programIdStart = content.indexOf("\"programId\":\"" + trainingId + "\"", searchIndex);
+                if (programIdStart == -1) {
+                    break; // No more matches
+                }
                 
-                for (String chapterObj : chapterObjects) {
-                    // Clean up the object string
-                    if (!chapterObj.startsWith("{")) {
-                        chapterObj = "{" + chapterObj;
-                    }
-                    if (!chapterObj.endsWith("}")) {
-                        chapterObj = chapterObj + "}";
-                    }
+                // Find the chapter object that contains this programId
+                int objStart = content.lastIndexOf("{", programIdStart);
+                int objEnd = content.indexOf("}", programIdStart);
+                
+                if (objStart != -1 && objEnd != -1 && objEnd > objStart) {
+                    String chapterObj = content.substring(objStart, objEnd + 1);
                     
-                    // Extract ID using string manipulation
+                    // Extract chapter ID from this object
                     int idStart = chapterObj.indexOf("\"id\":\"");
                     if (idStart != -1) {
                         idStart += 6; // length of "id":"
@@ -120,28 +130,109 @@ public class DeleteChapterTest extends BaseTest {
                             chapterIds.add(chapterId);
                         }
                     }
+                    
+                    searchIndex = objEnd + 1;
+                } else {
+                    break;
                 }
+            }
+            
+            System.out.println("✓ Found " + chapterIds.size() + " chapters for training " + trainingId);
+            
+        } catch (Exception e) {
+            System.out.println("⚠ Failed to read chapter IDs by training ID: " + e.getMessage());
+        }
+        return chapterIds;
+    }
+
+    private String getLatestTrainingIdFromJson() {
+        try {
+            String filePath = "src/test/resources/training-data/training-id.json";
+            StringBuilder jsonContent = new StringBuilder();
+            
+            // Read entire file
+            try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    jsonContent.append(line);
+                }
+            } catch (Exception e) {
+                System.out.println("⚠ Training JSON file not found: " + e.getMessage());
+                return null;
+            }
+            
+            String content = jsonContent.toString().trim();
+            if (content.isEmpty()) {
+                return null;
+            }
+            
+            // Handle both array and single object format
+            if (content.startsWith("[") && content.endsWith("]")) {
+                // Array format: [{"id":"uuid","title":"...","timestamp":123}]
+                String arrayContent = content.substring(1, content.length() - 1);
+                String[] trainingObjects = arrayContent.split("\\},\\{");
+                
+                String latestTrainingId = null;
+                long latestTimestamp = 0;
+                
+                for (String trainingObj : trainingObjects) {
+                    // Clean up object string
+                    if (!trainingObj.startsWith("{")) {
+                        trainingObj = "{" + trainingObj;
+                    }
+                    if (!trainingObj.endsWith("}")) {
+                        trainingObj = trainingObj + "}";
+                    }
+                    
+                    // Extract ID
+                    int idStart = trainingObj.indexOf("\"id\":\"");
+                    if (idStart != -1) {
+                        idStart += 6;
+                        int idEnd = trainingObj.indexOf("\"", idStart);
+                        if (idEnd != -1) {
+                            String trainingId = trainingObj.substring(idStart, idEnd);
+                            
+                            // Extract timestamp
+                            int timestampStart = trainingObj.indexOf("\"timestamp\":");
+                            if (timestampStart != -1) {
+                                timestampStart += 12;
+                                int timestampEnd = trainingObj.indexOf("}", timestampStart);
+                                if (timestampEnd != -1) {
+                                    try {
+                                        long timestamp = Long.parseLong(trainingObj.substring(timestampStart, timestampEnd));
+                                        if (timestamp > latestTimestamp) {
+                                            latestTimestamp = timestamp;
+                                            latestTrainingId = trainingId;
+                                        }
+                                    } catch (NumberFormatException e) {
+                                        // Ignore timestamp parsing errors
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                System.out.println("✓ Found latest training ID from array: " + latestTrainingId);
+                return latestTrainingId;
+                
             } else if (content.startsWith("{") && content.endsWith("}")) {
-                // Single object format: {"id":"uuid",...}
+                // Single object format: {"id":"uuid","title":"...","timestamp":123}
                 int idStart = content.indexOf("\"id\":\"");
                 if (idStart != -1) {
-                    idStart += 6; // length of "id":"
+                    idStart += 6;
                     int idEnd = content.indexOf("\"", idStart);
                     if (idEnd != -1) {
-                        String chapterId = content.substring(idStart, idEnd);
-                        chapterIds.add(chapterId);
+                        String trainingId = content.substring(idStart, idEnd);
+                        System.out.println("✓ Found training ID from single object: " + trainingId);
+                        return trainingId;
                     }
                 }
             }
             
-            System.out.println("✓ Read " + chapterIds.size() + " chapter IDs from JSON");
-            for (String id : chapterIds) {
-                System.out.println("  - " + id);
-            }
-            
         } catch (Exception e) {
-            System.out.println("⚠ Failed to read chapter IDs from JSON: " + e.getMessage());
+            System.out.println("⚠ Failed to read latest training ID from JSON: " + e.getMessage());
         }
-        return chapterIds;
+        return null;
     }
 }

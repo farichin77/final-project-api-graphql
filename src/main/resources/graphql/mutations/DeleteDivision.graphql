@@ -1,0 +1,3 @@
+mutation deleteDivision($id: String!) {
+  deleteDivision(id: $id)
+}

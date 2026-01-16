@@ -1,0 +1,6 @@
+mutation CreateContent($input: ContentInput!) {
+  createContent(input: $input) {
+    id
+    __typename
+  }
+}

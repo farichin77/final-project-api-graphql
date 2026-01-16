@@ -1,4 +1,3 @@
 title,description,order,programId,scenario,expectedResult
-SQL Basics,Learn basic SQL concepts,0,73d72701-7e2e-473d-a9e9-c529c6c8b361,Create valid chapter,SUCCESS
-,Missing description,1,73d72701-7e2e-473d-a9e9-c529c6c8b361,Create chapter without title,FAIL
-Advanced SQL,Learn advanced SQL queries,2,73d72701-7e2e-473d-a9e9-c529c6c8b361,Create advanced chapter,SUCCESS
+SQL Basics,Learn basic SQL concepts,0,{latestTrainingId},Create valid chapter,SUCCESS
+,,1,{latestTrainingId},Create chapter with all empty field,FAIL

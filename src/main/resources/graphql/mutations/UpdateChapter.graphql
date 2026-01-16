@@ -1,0 +1,10 @@
+mutation updateChapter($id: String!, $input: ChapterInput!) {
+  updateChapter(id: $id, input: $input) {
+    id
+    title
+    description
+    order
+    programId
+    __typename
+  }
+}

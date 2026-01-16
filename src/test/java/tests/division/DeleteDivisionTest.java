@@ -6,6 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import client.GraphQlClient;
 import services.AuthService;
+import utils.GraphQlFileReader;
 
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -32,7 +33,7 @@ public class DeleteDivisionTest extends BaseTest {
 
         // Execute delete mutation
         Map<String, Object> deleteVariables = Map.of("id", divisionId);
-        String deletePayload = "mutation deleteDivision($id: String!) { deleteDivision(id: $id) }";
+        String deletePayload = GraphQlFileReader.readMutation("DeleteDivision.graphql");
         Response deleteResponse = GraphQlClient.execute(deletePayload, deleteVariables);
 
         System.out.println("Delete Response Status: " + deleteResponse.statusCode());

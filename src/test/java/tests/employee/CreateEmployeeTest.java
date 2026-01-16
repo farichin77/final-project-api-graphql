@@ -2,19 +2,18 @@ package tests.employee;
 
 import core.BaseTest;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
+
 import org.testng.annotations.Test;
 import models.requests.employee.AddEmployeeVariable;
 import models.responses.employee.AddEmployeeResponse;
 import services.AuthService;
 import client.GraphQlClient;
 import utils.CsvReader;
-import utils.CsvReader.EmployeeTestData;
+import utils.TestDataProvider;
+import utils.GraphQlFileReader;
 import io.restassured.response.Response;
 
 import java.util.Map;
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class CreateEmployeeTest extends BaseTest {
@@ -22,27 +21,19 @@ public class CreateEmployeeTest extends BaseTest {
     // Static variable to store Ahmad ID for delete test
     public static String AHMAD_EMPLOYEE_ID = null;
 
-
-    @DataProvider(name = "employeeTestData")
-    public Object[][] getEmployeeTestData() {
-        var testDataList = CsvReader.readEmployeeTestData("test-data/employee-test.csv");
-        Object[][] data = new Object[testDataList.size()][1];
-        for (int i = 0; i < testDataList.size(); i++) {
-            data[i][0] = testDataList.get(i);
-        }
-        return data;
-    }
-
-    @Test(dataProvider = "employeeTestData")
-    public void testAddEmployeeWithDataDriven(EmployeeTestData testData) {
+    @Test(dataProvider = "employeeTestData", dataProviderClass = TestDataProvider.class)
+    public void testAddEmployeeWithDataDriven(CsvReader.EmployeeTestData testData) {
         // First authenticate to get valid session
         AuthService.postLogin();
 
-        // Call the employee service with the test data
+        // Call employee service with test data
+        // Replace timestamp placeholder in email
+        String processedEmail = testData.email.replace("{timestamp}", String.valueOf(System.currentTimeMillis()));
+        
         Map<String, Object> variables = AddEmployeeVariable.variables(
             testData.name,
             testData.employeeId,
-            testData.email,
+            processedEmail,
             testData.phoneNumber,
             testData.divisionId,
             testData.employeeRole,
@@ -54,12 +45,10 @@ public class CreateEmployeeTest extends BaseTest {
             testData.npwp
         );
 
-        String query = "mutation createEmployee($input: EmployeeInput!) {\n" +
-            "  createEmployee(input: $input) {\n" +
-            "    id\n" +
-            "    __typename\n" +
-            "  }\n" +
-            "}";
+        String query = GraphQlFileReader.readMutation("CreateEmployee.graphql");
+        
+        System.out.println("GraphQL Query: " + query);
+        System.out.println("Variables: " + variables);
 
         Response response = GraphQlClient.execute(query, variables);
         
@@ -92,6 +81,12 @@ public class CreateEmployeeTest extends BaseTest {
                         
                         // Save employee ID to JSON file
                         saveEmployeeIdToJson(AHMAD_EMPLOYEE_ID, testData.name);
+                    } else if ("Budi".equals(testData.name)) {
+                        // Save Budi ID to JSON as well
+                        saveEmployeeIdToJson(responseBody.data.createEmployee.id, testData.name);
+                    } else if ("Citra".equals(testData.name)) {
+                        // Save Citra ID to JSON as well
+                        saveEmployeeIdToJson(responseBody.data.createEmployee.id, testData.name);
                     }
                 } else if ("FAIL".equalsIgnoreCase(testData.expectedResult)) {
                     // Verify employee creation fails (should have errors or no id)
@@ -117,16 +112,47 @@ public class CreateEmployeeTest extends BaseTest {
 
     private void saveEmployeeIdToJson(String employeeId, String employeeName) {
         try {
-            String filePath = "src/test/resources/employee-data/employee-id.txt";
-            FileWriter file = new FileWriter(filePath);
-            file.write(employeeId);
-            file.close();
+            String filePath = "src/test/resources/employee-data/employee-id.json";
+            StringBuilder jsonContent = new StringBuilder();
             
-            System.out.println("✓ Employee ID saved to file: " + filePath);
+            // Read existing content
+            try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    jsonContent.append(line);
+                }
+            } catch (Exception e) {
+                // File doesn't exist, create new
+                jsonContent.append("[]");
+            }
+            
+            String content = jsonContent.toString().trim();
+            if (content.isEmpty()) {
+                content = "[]";
+            }
+            
+            // Parse and add new employee
+            if (content.startsWith("[") && content.endsWith("]")) {
+                String arrayContent = content.substring(1, content.length() - 1);
+                if (arrayContent.isEmpty()) {
+                    arrayContent = "";
+                } else {
+                    arrayContent += ",";
+                }
+                arrayContent += "{\"id\":\"" + employeeId + "\",\"name\":\"" + employeeName + "\",\"timestamp\":" + System.currentTimeMillis() + "}";
+                content = "[" + arrayContent + "]";
+            }
+            
+            // Write back to file
+            try (java.io.FileWriter writer = new java.io.FileWriter(filePath)) {
+                writer.write(content);
+            }
+            
+            System.out.println("✓ Employee ID saved to JSON file: " + filePath);
             System.out.println("✓ Employee ID: " + employeeId + " (Name: " + employeeName + ")");
             
         } catch (IOException e) {
-            System.out.println("⚠ Failed to save employee ID to file: " + e.getMessage());
+            System.out.println("⚠ Failed to save employee ID to JSON file: " + e.getMessage());
         }
     }
 }

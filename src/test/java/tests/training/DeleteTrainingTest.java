@@ -2,12 +2,12 @@ package tests.training;
 
 import core.BaseTest;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import services.AuthService;
 import client.GraphQlClient;
 import utils.CsvReader;
-import utils.CsvReader.DeleteTrainingTestData;
+import utils.TestDataProvider;
+import utils.GraphQlFileReader;
 import io.restassured.response.Response;
 
 import java.util.Map;
@@ -17,19 +17,8 @@ import java.io.IOException;
 
 public class DeleteTrainingTest extends BaseTest {
 
-
-    @DataProvider(name = "deleteTrainingTestData")
-    public Object[][] getDeleteTrainingTestData() {
-        var testDataList = CsvReader.readDeleteTrainingTestData("test-data/delete-training-test.csv");
-        Object[][] data = new Object[testDataList.size()][1];
-        for (int i = 0; i < testDataList.size(); i++) {
-            data[i][0] = testDataList.get(i);
-        }
-        return data;
-    }
-
-    @Test(dataProvider = "deleteTrainingTestData")
-    public void testDeleteTrainingWithDataDriven(DeleteTrainingTestData testData) {
+    @Test(dataProvider = "deleteTrainingTestData", dataProviderClass = TestDataProvider.class)
+    public void testDeleteTrainingWithDataDriven(CsvReader.DeleteTrainingTestData testData) {
         // First authenticate to get valid session
         AuthService.postLogin();
         
@@ -48,7 +37,7 @@ public class DeleteTrainingTest extends BaseTest {
 
         // Execute delete mutation
         Map<String, Object> variables = Map.of("id", actualId);
-        String deletePayload = "mutation deleteProgram($id: String!) { deleteProgram(id: $id) }";
+        String deletePayload = GraphQlFileReader.readMutation("DeleteTraining.graphql");
         Response deleteResponse = GraphQlClient.execute(deletePayload, variables);
 
         System.out.println("Delete Response Status: " + deleteResponse.statusCode());
