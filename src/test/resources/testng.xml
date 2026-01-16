@@ -26,7 +26,7 @@
     </test>
 
     
-    <!-- 3. Training Test - Create training data -->
+    <!-- 4. Training Test - Create training data -->
     <test name="Training Tests">
         <classes>
             <class name="tests.training.CreateTrainingTest"/>
@@ -35,32 +35,30 @@
         </classes>
     </test>
 
-    <!-- 4. Chapter Test - Create chapter data -->
+    <!-- 5. Chapter Test -->
     <test name="Chapter Tests">
         <classes>
-            <class name="tests.chapter.ChapterDataDrivenTest"/>
+            <class name="tests.chapter.CreateChapterTest"/>
+            <class name="tests.chapter.UpdateChapterTest"/>
         </classes>
     </test>
 
-    <!-- 5. Content Test - Create content data -->
+    <!-- 6. Content Test  -->
     <test name="Content Tests">
         <classes>
-            <class name="tests.content.ContentDataDrivenTest"/>
+            <class name="tests.content.CreateContentTest"/>
+            <class name="tests.content.UpdateContentTest"/>
+            <class name="tests.content.DeleteContentTest"/>
         </classes>
     </test>
 
-    <!-- 6. Update Content Test - Update existing content -->
-    <test name="Update Content Tests">
+    <!--7. Delete Chapter and Training -->
+    <test name="Delete Chapter and Training Tests">
         <classes>
-            <class name="tests.content.UpdateContentFromJsonTest"/>
+            <class name="tests.chapter.DeleteChapterTest"/>
+            <class name="tests.training.DeleteTrainingTest"/>
         </classes>
     </test>
 
-    <!-- 7. Delete Content Test - Delete content -->
-    <test name="Delete Content Tests">
-        <classes>
-            <class name="tests.content.DeleteContentFromJsonTest"/>
-        </classes>
-    </test>
-    
+
 </suite>

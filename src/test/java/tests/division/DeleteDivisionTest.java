@@ -1,12 +1,11 @@
 package tests.division;
 
+import core.BaseTest;
 import io.restassured.response.Response;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import qa.client.AuthSession;
-import qa.client.GraphQlClient;
-import qa.services.AuthService;
+import client.GraphQlClient;
+import services.AuthService;
 
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -14,13 +13,8 @@ import java.io.IOException;
 
 import java.util.Map;
 
-public class DeleteDivisionTest {
+public class DeleteDivisionTest extends BaseTest {
 
-    @BeforeMethod
-    public void setUp() {
-        // Reset session before each test
-        AuthSession.setSessionCookie(null);
-    }
 
     @Test
     public void testDeleteDivisionFromJson() {

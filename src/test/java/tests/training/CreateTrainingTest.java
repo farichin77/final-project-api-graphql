@@ -1,14 +1,13 @@
 package tests.training;
 
+import core.BaseTest;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import qa.client.AuthSession;
-import qa.services.AuthService;
-import qa.client.GraphQlClient;
-import qa.utils.CsvReader;
-import qa.utils.CsvReader.TrainingTestData;
+import services.AuthService;
+import client.GraphQlClient;
+import utils.CsvReader;
+import utils.CsvReader.TrainingTestData;
 import io.restassured.response.Response;
 
 import java.util.Map;
@@ -16,13 +15,8 @@ import java.util.HashMap;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CreateTrainingTest {
+public class CreateTrainingTest extends BaseTest {
 
-    @BeforeMethod
-    public void beforeTest() {
-        // Reset session before each test
-        AuthSession.setSessionCookie(null);
-    }
 
     @DataProvider(name = "trainingTestData")
     public Object[][] getTrainingTestData() {

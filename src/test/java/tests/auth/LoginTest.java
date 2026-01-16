@@ -3,11 +3,11 @@ package tests.auth;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import qa.models.responses.login.LoginResponse;
-import qa.services.AuthService;
-import qa.utils.ApiResponse;
-import qa.utils.CsvReader;
-import qa.utils.CsvReader.LoginTestData;
+import models.responses.login.LoginResponse;
+import services.AuthService;
+import utils.ApiResponse;
+import utils.CsvReader;
+import utils.CsvReader.LoginTestData;
 
 public class LoginTest {
 

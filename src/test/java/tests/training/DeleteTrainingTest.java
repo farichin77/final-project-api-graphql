@@ -1,14 +1,13 @@
 package tests.training;
 
+import core.BaseTest;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import qa.client.AuthSession;
-import qa.services.AuthService;
-import qa.client.GraphQlClient;
-import qa.utils.CsvReader;
-import qa.utils.CsvReader.DeleteTrainingTestData;
+import services.AuthService;
+import client.GraphQlClient;
+import utils.CsvReader;
+import utils.CsvReader.DeleteTrainingTestData;
 import io.restassured.response.Response;
 
 import java.util.Map;
@@ -16,13 +15,8 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class DeleteTrainingTest {
+public class DeleteTrainingTest extends BaseTest {
 
-    @BeforeMethod
-    public void setUp() {
-        // Reset session before each test
-        AuthSession.setSessionCookie(null);
-    }
 
     @DataProvider(name = "deleteTrainingTestData")
     public Object[][] getDeleteTrainingTestData() {

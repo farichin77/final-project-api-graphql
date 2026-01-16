@@ -1,32 +1,27 @@
 package tests.employee;
 
+import core.BaseTest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import models.requests.employee.AddEmployeeVariable;
 import models.responses.employee.AddEmployeeResponse;
-import qa.client.AuthSession;
-import qa.services.AuthService;
-import qa.client.GraphQlClient;
-import qa.utils.CsvReader;
-import qa.utils.CsvReader.EmployeeTestData;
+import services.AuthService;
+import client.GraphQlClient;
+import utils.CsvReader;
+import utils.CsvReader.EmployeeTestData;
 import io.restassured.response.Response;
 
 import java.util.Map;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CreateEmployeeTest {
+public class CreateEmployeeTest extends BaseTest {
 
     // Static variable to store Ahmad ID for delete test
     public static String AHMAD_EMPLOYEE_ID = null;
 
-    @BeforeMethod
-    public void beforeTest() {
-        // Reset session before each test
-        AuthSession.setSessionCookie(null);
-    }
 
     @DataProvider(name = "employeeTestData")
     public Object[][] getEmployeeTestData() {

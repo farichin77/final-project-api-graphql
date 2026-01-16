@@ -18,6 +18,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.13.2'
     implementation 'org.apache.poi:poi:5.2.5'
     implementation 'org.apache.poi:poi-ooxml:5.2.5'
+
+    // Extent Report dependencies
+    implementation 'com.aventstack:extentreports:5.1.2'
 }
 
 test {

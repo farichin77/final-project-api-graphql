@@ -1,27 +1,21 @@
 package tests.division;
 
+import core.BaseTest;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import qa.client.AuthSession;
-import qa.services.AuthService;
-import qa.client.GraphQlClient;
-import qa.utils.CsvReader;
-import qa.utils.CsvReader.DivisionTestData;
+import services.AuthService;
+import client.GraphQlClient;
+import utils.CsvReader;
+import utils.CsvReader.DivisionTestData;
 import io.restassured.response.Response;
 
 import java.util.Map;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CreateDivisionTest {
+public class CreateDivisionTest extends BaseTest {
 
-    @BeforeMethod
-    public void beforeTest() {
-        // Reset session before each test
-        AuthSession.setSessionCookie(null);
-    }
 
     @DataProvider(name = "divisionTestData")
     public Object[][] getDivisionTestData() {

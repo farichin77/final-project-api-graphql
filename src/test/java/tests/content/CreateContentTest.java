@@ -1,14 +1,15 @@
 package tests.content;
 
+import core.BaseTest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import qa.client.AuthSession;
-import qa.services.AuthService;
-import qa.client.GraphQlClient;
-import qa.utils.CsvReader;
-import qa.utils.CsvReader.ContentTestData;
+import client.AuthSession;
+import services.AuthService;
+import client.GraphQlClient;
+import utils.CsvReader;
+import utils.CsvReader.ContentTestData;
 import io.restassured.response.Response;
 
 import java.util.Map;
@@ -18,13 +19,7 @@ import java.io.IOException;
 import java.io.FileReader;
 import java.io.BufferedReader;
 
-public class ContentDataDrivenTest {
-
-    @BeforeMethod
-    public void beforeTest() {
-        // Reset session before each test
-        AuthSession.setSessionCookie(null);
-    }
+public class CreateContentTest extends BaseTest {
 
     @DataProvider(name = "contentTestData")
     public Object[][] getContentTestData() {

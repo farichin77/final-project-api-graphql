@@ -1,14 +1,13 @@
 package tests.employee;
 
+import core.BaseTest;
 import io.restassured.response.Response;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import qa.client.AuthSession;
-import qa.client.GraphQlClient;
+import client.GraphQlClient;
 import models.requests.employee.DeleteEmployeeVariable;
 import models.responses.employee.DeleteEmployeeResponse;
-import qa.services.AuthService;
+import services.AuthService;
 
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -16,13 +15,8 @@ import java.io.IOException;
 
 import java.util.Map;
 
-public class DeleteEmployeeTest {
+public class DeleteEmployeeTest extends BaseTest {
 
-    @BeforeMethod
-    public void setUp() {
-        // Reset session before each test
-        AuthSession.setSessionCookie(null);
-    }
 
     @Test
     public void testDeleteEmployeeFromJson() {
