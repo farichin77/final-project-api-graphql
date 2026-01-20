@@ -2,9 +2,9 @@ name: API Automation Tests
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, master, develop ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, develop ]
   workflow_dispatch:
 
 jobs:
@@ -34,7 +34,12 @@ jobs:
       run: chmod +x gradlew
 
     - name: Run tests
-      run: ./gradlew test
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_ENABLE_NOTIFICATIONS: 'true'
+        TEST_ENVIRONMENT: 'CI/CD'
+        GITHUB_ACTOR: ${{ github.actor }}
+      run: ./gradlew test --no-daemon
       continue-on-error: true
 
     - name: Upload Extent Report
@@ -44,3 +49,11 @@ jobs:
         name: extent-report
         path: test-output/
         retention-days: 30
+        
+    - name: Publish test results
+      if: always()
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      with:
+        files: |
+          build/test-results/**/*.xml
+

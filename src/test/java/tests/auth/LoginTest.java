@@ -13,7 +13,7 @@ public class LoginTest {
 
     @DataProvider(name = "loginTestData")
     public Object[][] getLoginTestData() {
-        var testDataList = CsvReader.readPositiveLoginTestData("test-data/login-test.csv");
+        var testDataList = CsvReader.readPositiveLoginTestData("test-data/auth/login-test.csv");
         Object[][] data = new Object[testDataList.size()][1];
         for (int i = 0; i < testDataList.size(); i++) {
             data[i][0] = testDataList.get(i);
@@ -23,16 +23,13 @@ public class LoginTest {
 
     @Test(dataProvider = "loginTestData")
     public void testLoginWithDataDriven(CsvReader.LoginTestData testData) {
-        String query = GraphQlFileReader.readMutation("Login.graphql");
+        String query = GraphQlFileReader.readMutationAuth("Login.graphql");
         
         io.restassured.response.Response rawResponse = AuthService.postLoginRaw(
             testData.email,
             testData.password,
             testData.companyId
         );
-        
-        // For now, keep the existing AuthService.postLoginRaw method
-        // The GraphQL query is read from file but not used in this method
 
         ApiResponse<LoginResponse> response = new ApiResponse<>(
             rawResponse.getStatusCode(),

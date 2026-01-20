@@ -1,4 +1,0 @@
-name,employeeId,email,phoneNumber,divisionId,employeeRole,angkatanId,gender,dateOfBirth,address,nik,npwp,scenario,expectedResult
-Ahmad,00102,ahmad.qa{timestamp}@dibimbing.id,81234567890,43b462d2-e360-46e2-b6bd-73b3f5fb0721,Instructor,3,male,1995-05-15T00:00:00.000Z,Bandung,123456789012346,12345678901235,Valid employee creation,SUCCESS
-ahmad,00104,test20260113180743@example.com,83456789012,43b462d2-e360-46e2-b6bd-73b3f5fb0721,Mentor,2,male,1997-08-10T00:00:00.000Z,Jakarta Selatan,123456789012348,12345678901237,creste employee with email already registered,FAIL
-,,,,,,,,,,,,create employee with missing all field,FAIL

@@ -12,7 +12,7 @@ import java.util.Map;
 public class EmployeeService {
 
   public static ApiResponse<AddEmployeeResponse> addEmployee() {
-    String query = TestDataLoader.load("graphql/mutations/CreateEmployee.graphql");
+    String query = TestDataLoader.load("graphql/mutations/employee/CreateEmployee.graphql");
 
     Map<String, Object> variable = AddEmployeeVariable.variables(
         "Bejo",

@@ -5,9 +5,17 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class GraphQlFileReader {
-    
-    public static String readMutation(String fileName) {
-        return readFile("graphql/mutations/" + fileName);
+    public static String readMutationAuth(String fileName) {
+        return readFile("graphql/mutations/auth/" + fileName);
+    }
+
+    public static String readMutationEmployee(String fileName) {
+        return readFile("graphql/mutations/employee/" + fileName);
+    }
+
+
+    public static String readMutationTraining(String fileName) {
+        return readFile("graphql/mutations/training/" + fileName);
     }
     
     public static String readQuery(String fileName) {

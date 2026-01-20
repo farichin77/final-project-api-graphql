@@ -6,7 +6,7 @@ public class TestDataProvider {
 
     @DataProvider(name = "chapterTestData")
     public static Object[][] getChapterTestData() {
-        var testDataList = CsvReader.readChapterTestData("test-data/chapter-test.csv");
+        var testDataList = CsvReader.readChapterTestData("test-data/training/chapter-test.csv");
         Object[][] data = new Object[testDataList.size()][1];
         for (int i = 0; i < testDataList.size(); i++) {
             data[i][0] = testDataList.get(i);
@@ -16,7 +16,7 @@ public class TestDataProvider {
 
     @DataProvider(name = "updateChapterTestData")
     public static Object[][] getUpdateChapterTestData() {
-        var testDataList = CsvReader.readUpdateChapterTestData("test-data/update-chapter-test.csv");
+        var testDataList = CsvReader.readUpdateChapterTestData("test-data/training/update-chapter-test.csv");
         Object[][] data = new Object[testDataList.size()][1];
         for (int i = 0; i < testDataList.size(); i++) {
             data[i][0] = testDataList.get(i);
@@ -26,7 +26,7 @@ public class TestDataProvider {
 
     @DataProvider(name = "deleteChapterTestData")
     public static Object[][] getDeleteChapterTestData() {
-        var testDataList = CsvReader.readDeleteChapterTestData("test-data/delete-chapter-test.csv");
+        var testDataList = CsvReader.readDeleteChapterTestData("test-data/training/delete-chapter-test.csv");
         Object[][] data = new Object[testDataList.size()][1];
         for (int i = 0; i < testDataList.size(); i++) {
             data[i][0] = testDataList.get(i);
@@ -36,7 +36,7 @@ public class TestDataProvider {
 
     @DataProvider(name = "contentTestData")
     public static Object[][] getContentTestData() {
-        var testDataList = CsvReader.readContentTestData("test-data/content-test.csv");
+        var testDataList = CsvReader.readContentTestData("test-data/training/content-test.csv");
         Object[][] data = new Object[testDataList.size()][1];
         for (int i = 0; i < testDataList.size(); i++) {
             data[i][0] = testDataList.get(i);
@@ -46,7 +46,7 @@ public class TestDataProvider {
 
     @DataProvider(name = "updateContentTestData")
     public static Object[][] getUpdateContentTestData() {
-        var testDataList = CsvReader.readUpdateContentTestData("test-data/update-content-test.csv");
+        var testDataList = CsvReader.readUpdateContentTestData("test-data/training/update-content-test.csv");
         Object[][] data = new Object[testDataList.size()][1];
         for (int i = 0; i < testDataList.size(); i++) {
             data[i][0] = testDataList.get(i);
@@ -56,7 +56,7 @@ public class TestDataProvider {
 
     @DataProvider(name = "deleteContentTestData")
     public static Object[][] getDeleteContentTestData() {
-        var testDataList = CsvReader.readDeleteContentTestData("test-data/delete-content-test.csv");
+        var testDataList = CsvReader.readDeleteContentTestData("test-data/training/delete-content-test.csv");
         Object[][] data = new Object[testDataList.size()][1];
         for (int i = 0; i < testDataList.size(); i++) {
             data[i][0] = testDataList.get(i);
@@ -66,7 +66,7 @@ public class TestDataProvider {
 
     @DataProvider(name = "divisionTestData")
     public static Object[][] getDivisionTestData() {
-        var testDataList = CsvReader.readDivisionTestData("test-data/division-test.csv");
+        var testDataList = CsvReader.readDivisionTestData("test-data/employee/division-test.csv");
         Object[][] data = new Object[testDataList.size()][1];
         for (int i = 0; i < testDataList.size(); i++) {
             data[i][0] = testDataList.get(i);
@@ -76,7 +76,7 @@ public class TestDataProvider {
 
     @DataProvider(name = "updateDivisionTestData")
     public static Object[][] getUpdateDivisionTestData() {
-        var testDataList = CsvReader.readUpdateDivisionTestData("test-data/update-division-test.csv");
+        var testDataList = CsvReader.readUpdateDivisionTestData("test-data/employee/update-division-test.csv");
         Object[][] data = new Object[testDataList.size()][1];
         for (int i = 0; i < testDataList.size(); i++) {
             data[i][0] = testDataList.get(i);
@@ -93,7 +93,7 @@ public class TestDataProvider {
 
     @DataProvider(name = "employeeTestData")
     public static Object[][] getEmployeeTestData() {
-        var testDataList = CsvReader.readEmployeeTestData("test-data/employee-test.csv");
+        var testDataList = CsvReader.readEmployeeTestData("test-data/employee/employee-test.csv");
         Object[][] data = new Object[testDataList.size()][1];
         for (int i = 0; i < testDataList.size(); i++) {
             data[i][0] = testDataList.get(i);
@@ -103,7 +103,7 @@ public class TestDataProvider {
 
     @DataProvider(name = "updateEmployeeTestData")
     public static Object[][] getUpdateEmployeeTestData() {
-        var testDataList = CsvReader.readUpdateEmployeeTestData("test-data/update-employee-test.csv");
+        var testDataList = CsvReader.readUpdateEmployeeTestData("test-data/employee/update-employee-test.csv");
         Object[][] data = new Object[testDataList.size()][1];
         for (int i = 0; i < testDataList.size(); i++) {
             data[i][0] = testDataList.get(i);
@@ -123,7 +123,7 @@ public class TestDataProvider {
 
     @DataProvider(name = "trainingTestData")
     public static Object[][] getTrainingTestData() {
-        var testDataList = CsvReader.readTrainingTestData("test-data/training-test.csv");
+        var testDataList = CsvReader.readTrainingTestData("test-data/training/training-test.csv");
         Object[][] data = new Object[testDataList.size()][1];
         for (int i = 0; i < testDataList.size(); i++) {
             data[i][0] = testDataList.get(i);
@@ -133,7 +133,7 @@ public class TestDataProvider {
 
     @DataProvider(name = "updateTrainingTestData")
     public static Object[][] getUpdateTrainingTestData() {
-        var testDataList = CsvReader.readUpdateTrainingTestData("test-data/update-training-test.csv");
+        var testDataList = CsvReader.readUpdateTrainingTestData("test-data/training/update-training-test.csv");
         Object[][] data = new Object[testDataList.size()][1];
         for (int i = 0; i < testDataList.size(); i++) {
             data[i][0] = testDataList.get(i);
@@ -143,7 +143,7 @@ public class TestDataProvider {
 
     @DataProvider(name = "deleteTrainingTestData")
     public static Object[][] getDeleteTrainingTestData() {
-        var testDataList = CsvReader.readDeleteTrainingTestData("test-data/delete-training-test.csv");
+        var testDataList = CsvReader.readDeleteTrainingTestData("test-data/training/delete-training-test.csv");
         Object[][] data = new Object[testDataList.size()][1];
         for (int i = 0; i < testDataList.size(); i++) {
             data[i][0] = testDataList.get(i);
@@ -153,7 +153,7 @@ public class TestDataProvider {
 
     @DataProvider(name = "loginTestData")
     public static Object[][] getLoginTestData() {
-        var testDataList = CsvReader.readLoginTestData("test-data/login-test.csv");
+        var testDataList = CsvReader.readLoginTestData("test-data/auth/login-test.csv");
         Object[][] data = new Object[testDataList.size()][1];
         for (int i = 0; i < testDataList.size(); i++) {
             data[i][0] = testDataList.get(i);
@@ -163,7 +163,7 @@ public class TestDataProvider {
 
     @DataProvider(name = "positiveLoginTestData")
     public static Object[][] getPositiveLoginTestData() {
-        var testDataList = CsvReader.readPositiveLoginTestData("test-data/login-test.csv");
+        var testDataList = CsvReader.readPositiveLoginTestData("test-data/auth/login-test.csv");
         Object[][] data = new Object[testDataList.size()][1];
         for (int i = 0; i < testDataList.size(); i++) {
             data[i][0] = testDataList.get(i);

@@ -13,7 +13,7 @@ public class ExtentManager {
     
     private static ExtentReports extent;
     private static ThreadLocal<ExtentTest> extentTest = new ThreadLocal<>();
-    private static final String REPORT_PATH = "test-output/AutomationReport.html";
+    private static final String REPORT_PATH = "test-output/Automation-API-Report.html";
 
     public static ExtentReports getInstance() {
         if (extent == null) {

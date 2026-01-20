@@ -21,6 +21,9 @@ dependencies {
 
     // Extent Report dependencies
     testImplementation 'com.aventstack:extentreports:5.1.2'
+    
+    // HTTP Client for Slack integration
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
 }
 
 test {

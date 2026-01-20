@@ -20,7 +20,7 @@ public class AuthService {
     }
 
     public static ApiResponse<LoginResponse> postLogin(String email, String password, String companyId) {
-        String query = TestDataLoader.load("graphql/mutations/Login.graphql");
+        String query = TestDataLoader.load("graphql/mutations/auth/Login.graphql");
 
         LoginVariables variables = new LoginVariables(email, password, companyId);
 
@@ -61,7 +61,7 @@ public class AuthService {
     }
 
     public static Response postLoginRaw(String email, String password, String companyId) {
-        String query = TestDataLoader.load("graphql/mutations/Login.graphql");
+        String query = TestDataLoader.load("graphql/mutations/auth/Login.graphql");
 
         LoginVariables variables = new LoginVariables(email, password, companyId);
 
