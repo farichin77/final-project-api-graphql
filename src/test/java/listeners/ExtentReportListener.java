@@ -26,24 +26,13 @@ public class ExtentReportListener implements ITestListener, ISuiteListener {
     public void onFinish(ITestContext context) {
         ExtentManager.flush();
         
-        // Calculate execution time
-        long executionTime = System.currentTimeMillis() - suiteStartTime;
-        
-        // Collect results
-        String testName = context.getName();
-        int total = context.getAllTestMethods().length;
-        int passed = context.getPassedTests().size();
-        int failed = context.getFailedTests().size();
-        int skipped = context.getSkippedTests().size();
-        
-        resultsManager.addSuiteResults(testName, total, passed, failed, skipped);
-        
-        // Add failed test names
-        for (String failedTest : failedTestNames) {
-            resultsManager.addFailedTest(failedTest);
+        // Track failed tests
+        for (ITestResult result : context.getFailedTests().getAllResults()) {
+            String testName = result.getMethod().getMethodName();
+            if (!failedTestNames.contains(testName)) {
+                failedTestNames.add(testName);
+            }
         }
-        
-        failedTestNames.clear();
     }
     
     @Override
@@ -64,7 +53,7 @@ public class ExtentReportListener implements ITestListener, ISuiteListener {
 
     @Override
     public void onFinish(ISuite suite) {
-        // Count all test results from this suite
+        // Aggregate all test results from this suite
         int total = 0;
         int passed = 0;
         int failed = 0;
@@ -73,12 +62,21 @@ public class ExtentReportListener implements ITestListener, ISuiteListener {
         java.util.Map<String, org.testng.ISuiteResult> results = suite.getResults();
         for (org.testng.ISuiteResult result : results.values()) {
             org.testng.ITestContext context = result.getTestContext();
+            total += context.getAllTestMethods().length;
             passed += context.getPassedTests().size();
             failed += context.getFailedTests().size();
             skipped += context.getSkippedTests().size();
         }
         
-        total = passed + failed + skipped;
+        // Add results only once per suite
+        resultsManager.addSuiteResults(suite.getName(), total, passed, failed, skipped);
+        
+        // Add failed test names
+        for (String failedTest : failedTestNames) {
+            resultsManager.addFailedTest(failedTest);
+        }
+        
+        failedTestNames.clear();
         
         // Mark suite as completed and try to send notification
         resultsManager.markSuiteCompleted(suite.getName());

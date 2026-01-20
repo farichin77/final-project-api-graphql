@@ -140,14 +140,15 @@ public class TestResultsManager {
     private String buildSlackPayload() {
         JsonObject payload = new JsonObject();
         
-        // Determine status emoji and color
+        // Determine status
         String statusEmoji = failedTests.get() == 0 ? "✅" : "❌";
         String statusText = failedTests.get() == 0 ? "PASSED" : "FAILED";
         String color = failedTests.get() == 0 ? "#2eb886" : "#ff0000";
         
-        // Calculate pass percentage
+        // Calculate pass percentage (cap at 100%)
         int total = totalTests.get();
-        double passPercentage = total > 0 ? (passedTests.get() * 100.0 / total) : 0;
+        int passCount = passedTests.get();
+        double passPercentage = total > 0 ? Math.min((passCount * 100.0 / total), 100.0) : 0;
         
         // Build blocks for rich formatting
         JsonArray blocks = new JsonArray();
@@ -157,7 +158,7 @@ public class TestResultsManager {
         headerBlock.addProperty("type", "header");
         JsonObject headerText = new JsonObject();
         headerText.addProperty("type", "plain_text");
-        headerText.addProperty("text", statusEmoji + " Test Automation - " + statusText);
+        headerText.addProperty("text", statusEmoji + " API Test Results - " + statusText);
         headerText.addProperty("emoji", true);
         headerBlock.add("text", headerText);
         blocks.add(headerBlock);
