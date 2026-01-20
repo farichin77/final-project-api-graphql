@@ -4,18 +4,27 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import utils.ExtentManager;
-import utils.GlobalTestResultsTracker;
+import utils.TestResultsManager;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ExtentReportListener implements ITestListener {
     
+    // Expected test suites to track completion
+    private static final List<String> EXPECTED_SUITES = Arrays.asList(
+        "Login Tests",
+        "Create and Update Tests",
+        "Get Data Verification Tests",
+        "Delete Tests"
+    );
+    
     private long suiteStartTime;
     private List<String> failedTestNames = new ArrayList<>();
-    private GlobalTestResultsTracker globalTracker = GlobalTestResultsTracker.getInstance();
+    private TestResultsManager resultsManager = TestResultsManager.getInstance();
 
     @Override
     public void onStart(ITestContext context) {
@@ -23,6 +32,19 @@ public class ExtentReportListener implements ITestListener {
         suiteStartTime = System.currentTimeMillis();
         failedTestNames.clear();
         System.out.println("=== Test Suite Started: " + context.getSuite().getName() + " ===");
+        
+        // Initialize results manager on first suite start
+        if (resultsManager.getCompletedSuites().isEmpty()) {
+            resultsManager.setEnvironment(System.getenv("TEST_ENVIRONMENT") != null ? 
+                System.getenv("TEST_ENVIRONMENT") : "CI/CD");
+            resultsManager.setTriggeredBy(System.getenv("GITHUB_ACTOR") != null ? 
+                System.getenv("GITHUB_ACTOR") : "Manual");
+            
+            String reportUrl = System.getenv("REPORT_URL");
+            if (reportUrl != null && !reportUrl.isEmpty()) {
+                resultsManager.setReportUrl(reportUrl);
+            }
+        }
     }
 
     @Override
@@ -40,21 +62,27 @@ public class ExtentReportListener implements ITestListener {
         System.out.println("Failed: " + context.getFailedTests().size());
         System.out.println("Skipped: " + context.getSkippedTests().size());
         
-        // Add results to global tracker (NOT sending notification here anymore)
+        // Add results to results manager
         int total = context.getAllTestMethods().length;
         int passed = context.getPassedTests().size();
         int failed = context.getFailedTests().size();
         int skipped = context.getSkippedTests().size();
         
-        globalTracker.addSuiteResults(suiteName, total, passed, failed, skipped);
+        resultsManager.addSuiteResults(suiteName, total, passed, failed, skipped);
         
-        // Add failed test names to global tracker
+        // Add failed test names to results manager
         for (String testName : failedTestNames) {
-            globalTracker.addFailedTest(testName);
+            resultsManager.addFailedTest(testName);
         }
         
+        resultsManager.markSuiteCompleted(suiteName);
+        
         System.out.println("⏰ Suite execution time: " + (executionTime / 1000) + " seconds");
-        System.out.println("✓ Results added to aggregated tracker (notification sent after all suites complete)\n");
+        
+        // Check if all suites are completed and send notification
+        resultsManager.sendSlackNotification(EXPECTED_SUITES);
+        
+        System.out.println("✓ Results aggregated\n");
     }
 
     @Override
