@@ -108,21 +108,33 @@ public class TestResultsManager {
      * Send aggregated test results to Slack
      */
     public void sendSlackNotification(List<String> expectedSuites) {
+        System.out.println("\n📋 Slack Notification Check:");
+        System.out.println("   - All suites completed: " + allSuitesCompleted(expectedSuites));
+        System.out.println("   - Notification sent: " + notificationSent);
+        System.out.println("   - Completed suites: " + completedSuites);
+        System.out.println("   - Expected suites: " + expectedSuites);
+        
         if (!allSuitesCompleted(expectedSuites) || notificationSent) {
+            System.out.println("   ⏭️ Skipping Slack notification (not all suites completed or already sent)");
             return;
         }
         
         try {
             webhookUrl = System.getenv("SLACK_WEBHOOK_URL");
             
+            System.out.println("   📍 Webhook URL configured: " + (webhookUrl != null && !webhookUrl.isEmpty()));
+            
             String enableNotifications = System.getenv("SLACK_ENABLE_NOTIFICATIONS");
+            System.out.println("   📍 SLACK_ENABLE_NOTIFICATIONS: " + enableNotifications);
+            
             if (enableNotifications != null && !enableNotifications.equalsIgnoreCase("true")) {
                 System.out.println("ℹ Slack notifications are disabled");
                 return;
             }
             
             if (webhookUrl == null || webhookUrl.isEmpty()) {
-                System.out.println("ℹ Slack webhook URL not configured, skipping notification");
+                System.out.println("⚠️ Slack webhook URL not configured, skipping notification");
+                System.out.println("   Make sure to set SLACK_WEBHOOK_URL environment variable in GitHub Actions");
                 return;
             }
             
@@ -131,10 +143,15 @@ public class TestResultsManager {
             notificationSent = true;
             
             System.out.println("\n" + "=".repeat(60));
-            System.out.println("✓ Slack notification sent successfully");
+            System.out.println("✅ Slack notification sent successfully!");
             System.out.println("=".repeat(60));
+            System.out.println("   Total Tests: " + totalTests.get());
+            System.out.println("   Passed: " + passedTests.get());
+            System.out.println("   Failed: " + failedTests.get());
+            System.out.println("   Skipped: " + skippedTests.get());
+            System.out.println("=".repeat(60) + "\n");
         } catch (Exception e) {
-            System.err.println("✗ Failed to send Slack notification: " + e.getMessage());
+            System.err.println("❌ Failed to send Slack notification: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -290,16 +307,29 @@ public class TestResultsManager {
      * Send message to Slack webhook
      */
     private void sendMessage(String payload) throws IOException {
+        System.out.println("\n📤 Sending to Slack...");
+        System.out.println("   Webhook URL length: " + (webhookUrl != null ? webhookUrl.length() : 0) + " chars");
+        
         RequestBody body = RequestBody.create(payload, JSON);
         Request request = new Request.Builder()
                 .url(webhookUrl)
                 .post(body)
                 .build();
         
+        System.out.println("   Request prepared, sending...");
+        
         try (Response response = client.newCall(request).execute()) {
+            int statusCode = response.code();
+            String responseBody = response.body() != null ? response.body().string() : "N/A";
+            
+            System.out.println("   Response status: " + statusCode);
+            System.out.println("   Response body: " + responseBody);
+            
             if (!response.isSuccessful()) {
-                throw new IOException("Slack API returned error: " + response.code() + " - " + response.message());
+                throw new IOException("Slack API returned error: " + statusCode + " - " + response.message());
             }
+            
+            System.out.println("   ✅ Message sent successfully!");
         }
     }
     

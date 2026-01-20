@@ -45,7 +45,15 @@ jobs:
         SLACK_ENABLE_NOTIFICATIONS: 'true'
         TEST_ENVIRONMENT: 'CI/CD'
         GITHUB_ACTOR: ${{ github.actor }}
-      run: ./gradlew test --no-daemon
+        REPORT_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      run: |
+        echo "🔍 Checking Slack Configuration..."
+        echo "✓ SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL != '' && 'Configured' || 'NOT CONFIGURED' }}"
+        echo "✓ SLACK_ENABLE_NOTIFICATIONS: $SLACK_ENABLE_NOTIFICATIONS"
+        echo "✓ TEST_ENVIRONMENT: $TEST_ENVIRONMENT"
+        echo "✓ GITHUB_ACTOR: $GITHUB_ACTOR"
+        echo ""
+        ./gradlew test --no-daemon
       continue-on-error: true
 
     - name: Upload Extent Report
