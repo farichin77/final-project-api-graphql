@@ -38,9 +38,9 @@ public class SlackNotifier {
         JsonObject payload = new JsonObject();
         
         // Determine status emoji and color
-        String statusEmoji = summary.failed == 0 ? "🎉" : "⚠️";
+        String statusEmoji = summary.failed == 0 ? "✅" : "❌";
         String statusText = summary.failed == 0 ? "PASSED" : "FAILED";
-        String color = summary.failed == 0 ? "#28a745" : "#dc3545";
+        String color = summary.failed == 0 ? "#2eb886" : "#ff0000";
         
         // Calculate pass percentage
         double passPercentage = summary.total > 0 ? 
@@ -49,7 +49,7 @@ public class SlackNotifier {
         // Build blocks for rich formatting
         JsonArray blocks = new JsonArray();
         
-        // Header block
+        // Header block with status
         JsonObject headerBlock = new JsonObject();
         headerBlock.addProperty("type", "header");
         JsonObject headerText = new JsonObject();
@@ -64,7 +64,7 @@ public class SlackNotifier {
         divider1.addProperty("type", "divider");
         blocks.add(divider1);
         
-        // Test Results Section
+        // Test Results Section with better formatting
         JsonObject resultsSection = new JsonObject();
         resultsSection.addProperty("type", "section");
         JsonObject resultsText = new JsonObject();
@@ -72,12 +72,12 @@ public class SlackNotifier {
         
         StringBuilder resultsMarkdown = new StringBuilder();
         resultsMarkdown.append("*📊 Test Results Summary*\n");
-        resultsMarkdown.append("```\n");
-        resultsMarkdown.append(String.format("✓ Total Tests:  %d\n", summary.total));
-        resultsMarkdown.append(String.format("✓ Passed:       %d (%.1f%%)\n", summary.passed, passPercentage));
-        resultsMarkdown.append(String.format("✗ Failed:       %d\n", summary.failed));
-        resultsMarkdown.append(String.format("⊘ Skipped:      %d\n", summary.skipped));
-        resultsMarkdown.append("```");
+        resultsMarkdown.append("─────────────────────────────\n");
+        resultsMarkdown.append(String.format("*Total Tests:*     %d\n", summary.total));
+        resultsMarkdown.append(String.format("✅ *Passed:*        %d (%.1f%%)\n", summary.passed, passPercentage));
+        resultsMarkdown.append(String.format("❌ *Failed:*        %d\n", summary.failed));
+        resultsMarkdown.append(String.format("⏭️ *Skipped:*       %d\n", summary.skipped));
+        resultsMarkdown.append("─────────────────────────────");
         
         resultsText.addProperty("text", resultsMarkdown.toString());
         resultsSection.add("text", resultsText);
@@ -85,6 +85,10 @@ public class SlackNotifier {
         
         // Failed tests details (if any)
         if (summary.failed > 0 && summary.failedTests != null && !summary.failedTests.isEmpty()) {
+            JsonObject dividerBefore = new JsonObject();
+            dividerBefore.addProperty("type", "divider");
+            blocks.add(dividerBefore);
+            
             JsonObject failedSection = new JsonObject();
             failedSection.addProperty("type", "section");
             JsonObject failedText = new JsonObject();
@@ -94,10 +98,10 @@ public class SlackNotifier {
             failedMarkdown.append("*❌ Failed Tests:*\n");
             int displayCount = Math.min(summary.failedTests.size(), 5);
             for (int i = 0; i < displayCount; i++) {
-                failedMarkdown.append("• ").append(summary.failedTests.get(i)).append("\n");
+                failedMarkdown.append("  • ").append(summary.failedTests.get(i)).append("\n");
             }
             if (summary.failedTests.size() > 5) {
-                failedMarkdown.append(String.format("_...and %d more_\n", summary.failedTests.size() - 5));
+                failedMarkdown.append(String.format("  • _...and %d more_", summary.failedTests.size() - 5));
             }
             
             failedText.addProperty("text", failedMarkdown.toString());
@@ -105,12 +109,12 @@ public class SlackNotifier {
             blocks.add(failedSection);
         }
         
-        // Divider
+        // Divider before metadata
         JsonObject divider2 = new JsonObject();
         divider2.addProperty("type", "divider");
         blocks.add(divider2);
         
-        // Metadata Section
+        // Metadata Section - 2x2 grid
         JsonObject metadataSection = new JsonObject();
         metadataSection.addProperty("type", "section");
         
@@ -119,26 +123,26 @@ public class SlackNotifier {
         // Execution Time
         JsonObject timeField = new JsonObject();
         timeField.addProperty("type", "mrkdwn");
-        timeField.addProperty("text", "*⏱️ Execution Time:*\n" + summary.executionTime);
+        timeField.addProperty("text", "*⏱️ Execution Time*\n" + summary.executionTime);
         fields.add(timeField);
         
         // Environment
         JsonObject envField = new JsonObject();
         envField.addProperty("type", "mrkdwn");
-        envField.addProperty("text", "*🌍 Environment:*\n" + summary.environment);
+        envField.addProperty("text", "*🌍 Environment*\n" + summary.environment);
         fields.add(envField);
         
         // Triggered By
         JsonObject userField = new JsonObject();
         userField.addProperty("type", "mrkdwn");
-        userField.addProperty("text", "*👤 Triggered by:*\n" + summary.triggeredBy);
+        userField.addProperty("text", "*👤 Triggered by*\n" + summary.triggeredBy);
         fields.add(userField);
         
         // Timestamp
         JsonObject timestampField = new JsonObject();
         timestampField.addProperty("type", "mrkdwn");
         String timestamp = new SimpleDateFormat("dd MMM yyyy, HH:mm:ss").format(new Date());
-        timestampField.addProperty("text", "*📅 Timestamp:*\n" + timestamp);
+        timestampField.addProperty("text", "*📅 Timestamp*\n" + timestamp);
         fields.add(timestampField);
         
         metadataSection.add("fields", fields);
@@ -146,11 +150,15 @@ public class SlackNotifier {
         
         // Report Link (if available)
         if (summary.reportUrl != null && !summary.reportUrl.isEmpty()) {
+            JsonObject divider3 = new JsonObject();
+            divider3.addProperty("type", "divider");
+            blocks.add(divider3);
+            
             JsonObject linkSection = new JsonObject();
             linkSection.addProperty("type", "section");
             JsonObject linkText = new JsonObject();
             linkText.addProperty("type", "mrkdwn");
-            linkText.addProperty("text", "*🔗 <" + summary.reportUrl + "|View Detailed Report>*");
+            linkText.addProperty("text", "<" + summary.reportUrl + "|📈 View Detailed Test Report>");
             linkSection.add("text", linkText);
             blocks.add(linkSection);
         }

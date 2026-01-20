@@ -35,7 +35,7 @@
 <a href="#"><span class="badge badge-primary">API Testing Execution Results</span></a>
 </li>
 <li class="m-r-10">
-<a href="#"><span class="badge badge-primary">Tuesday, 20 Jan 2026 17:57:43</span></a>
+<a href="#"><span class="badge badge-primary">Tuesday, 20 Jan 2026 18:26:07</span></a>
 </li>
 </ul>
 </div>
@@ -52,6 +52,11 @@
 <span class="ico"><i class="fa fa-list"></i></span>
 </a>
 </li>
+<li class="nav-item dropdown" onclick="toggleView('exception-view')">
+<a id="nav-exception" class="dropdown-toggle" href="#">
+<span class="ico"><i class="fa fa-bug"></i></span>
+</a>
+</li>
 </ul>
 </div>
 </div>      <div class="vcontainer">
@@ -61,13 +66,13 @@
 <div class="col-md-3">
 <div class="card"><div class="card-body">
 <p class="m-b-0">Started</p>
-<h3>Tuesday, 20 Jan 2026 17:57:43</h3>
+<h3>Tuesday, 20 Jan 2026 18:26:07</h3>
 </div></div>
 </div>
 <div class="col-md-3">
 <div class="card"><div class="card-body">
 <p class="m-b-0">Ended</p>
-<h3>Tuesday, 20 Jan 2026 17:57:51</h3>
+<h3>Tuesday, 20 Jan 2026 18:26:17</h3>
 </div></div>
 </div>
 <div class="col-md-3">
@@ -79,7 +84,7 @@
 <div class="col-md-3">
 <div class="card"><div class="card-body">
 <p class="m-b-0 text-fail">Tests Failed</p>
-<h3>0</h3>
+<h3>1</h3>
 </div></div>
 </div>
 </div>
@@ -95,12 +100,12 @@
 </div>
 </div>
 <div class="card-footer">
-<div><small data-tooltip='100%'>
+<div><small data-tooltip='50%'>
 <b>1</b> tests passed
 </small>
 </div>
 <div>
-<small data-tooltip='0%'><b>0</b> tests failed,
+<small data-tooltip='50%'><b>1</b> tests failed,
 <b>0</b> skipped, <b data-tooltip='0%'>0</b> others
 </small>
 </div>
@@ -118,10 +123,10 @@
 </div>
 </div>
 <div class="card-footer">
-<div><small data-tooltip='14%'><b>1</b> events passed</small></div>
+<div><small data-tooltip='5%'><b>1</b> events passed</small></div>
 <div>
-<small data-tooltip='0%'><b>0</b> events failed,
-<b data-tooltip='%'>6</b> others
+<small data-tooltip='45%'><b>9</b> events failed,
+<b data-tooltip='%'>10</b> others
 </small>
 </div>
 </div>
@@ -137,7 +142,7 @@
 </div></div>
 <script>
 var timeline = {
-"testLoginWithDataDriven":6.843
+"testCreateDivisionWithDataDriven":7.516,"testCreateDivisionWithDataDriven":0.776
 };
 </script>
 <div class="row">
@@ -147,12 +152,12 @@ var timeline = {
 <div class="card-body pb-0 pt-0"><table class="table table-sm table-bordered">
 <thead><tr class="bg-gray"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th><th>Others</th><th>Passed %</th></tr></thead><tbody>
 <tr>
-<td>Authentication</td>
+<td>EmployeeModule</td>
+<td>1</td>
 <td>1</td>
 <td>0</td>
 <td>0</td>
-<td>0</td>
-<td>100%</td>
+<td>50%</td>
 </tr>
 </tbody>
 </table></div>
@@ -202,7 +207,7 @@ var timeline = {
 var statusGroup = {
 parentCount: 5,
 passParent: 1,
-failParent: 0,
+failParent: 1,
 warningParent: 0,
 skipParent: 0,
 childCount: 5,
@@ -219,10 +224,10 @@ skipGrandChild: 0,
 infoGrandChild: 0,
 eventsCount: 5,
 passEvents: 1,
-failEvents: 0,
+failEvents: 9,
 warningEvents: 0,
 skipEvents: 0,
-infoEvents: 6
+infoEvents: 10
 };
 </script><div class="test-wrapper row view test-view">
   <div class="test-list">
@@ -235,6 +240,7 @@ infoEvents: 6
 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-exclamation-circle"></i></a>
 <ul id="status-toggle" class="dropdown-menu dropdown-md p-v-0">
 <a class="dropdown-item" status="pass" href="#"><span>Pass</span><span class="status success"></span></a>
+<a class="dropdown-item" status="fail" href="#"><span>Fail</span><span class="status danger"></span></a>
 <div class="dropdown-divider"></div>
 <a status="clear" class="dropdown-item" href="#"><span>Clear</span><span class="pull-right"><i class="fa fa-close"></i></span></a>
 </ul>
@@ -242,7 +248,7 @@ infoEvents: 6
 <li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-tag"></i></a>
 <ul id="tag-toggle" class="dropdown-menu dropdown-md p-v-0">
-<a class="dropdown-item" href="#">Authentication</a>
+<a class="dropdown-item" href="#">EmployeeModule</a>
 </ul>
 </li>
 </ul>
@@ -250,12 +256,12 @@ infoEvents: 6
       <ul class="test-list-item">
         <li class="test-item"  status="pass" test-id="1"
           author=""
-          tag="Authentication"
+          tag="EmployeeModule"
           device="">
           <div class="test-detail">
-            <p class="name">testLoginWithDataDriven</p>
+            <p class="name">testCreateDivisionWithDataDriven</p>
             <p class="text-sm">
-              <span>5:57:43 PM</span> / <span>00:00:06:843</span>
+              <span>6:26:08 PM</span> / <span>00:00:07:516</span>
               <span class="badge pass-bg log float-right">Pass</span>
             </p>
           </div>
@@ -263,16 +269,16 @@ infoEvents: 6
 <div class="detail-head">
 <div class="p-v-10">
 <div class="info">
-<h5 class="test-status text-pass">testLoginWithDataDriven</h5>
-<span class='badge badge-success'>01.20.2026 5:57:43 PM</span>
-<span class='badge badge-danger'>01.20.2026 5:57:50 PM</span>
-<span class='badge badge-default'>00:00:06:843</span>
+<h5 class="test-status text-pass">testCreateDivisionWithDataDriven</h5>
+<span class='badge badge-success'>01.20.2026 6:26:08 PM</span>
+<span class='badge badge-danger'>01.20.2026 6:26:16 PM</span>
+<span class='badge badge-default'>00:00:07:516</span>
 &middot; <span class='uri-anchor badge badge-default'>#test-id=1</span>
 <span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
 <span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
 <span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
 </div>
-<div class="m-t-15"><span class="badge badge-pill badge-default">Authentication</span></div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">EmployeeModule</span></div>
 <div class="m-t-10 m-l-5"></div>
 </div>
 </div><div class="detail-body mt-4">
@@ -281,51 +287,230 @@ infoEvents: 6
   <tbody>
       <tr class="event-row">
         <td><span class="badge log info-bg">Info</span></td>
-        <td>5:57:43 PM</td>
+        <td>6:26:08 PM</td>
         <td>
-          <details><summary><b>Test Information</b></summary><table border='1' style='border-collapse: collapse; width: 100%; color: #e0e0e0; border-color: #444;'><tr><td style='padding: 8px; background-color: #333;'><b>Test Name</b></td><td style='padding: 8px;'>testLoginWithDataDriven</td></tr><tr><td style='padding: 8px; background-color: #333;'><b>Category</b></td><td style='padding: 8px;'>Authentication</td></tr><tr><td style='padding: 8px; background-color: #333;'><b>Test Class</b></td><td style='padding: 8px;'>tests.auth.LoginTest</td></tr><tr><td style='padding: 8px; background-color: #333;'><b>Priority</b></td><td style='padding: 8px;'>Normal</td></tr></table></details>
+          <details><summary><b>Test Information</b></summary><table border='1' style='border-collapse: collapse; width: 100%; color: #e0e0e0; border-color: #444;'><tr><td style='padding: 8px; background-color: #333;'><b>Test Name</b></td><td style='padding: 8px;'>testCreateDivisionWithDataDriven</td></tr><tr><td style='padding: 8px; background-color: #333;'><b>Category</b></td><td style='padding: 8px;'>Employee Module</td></tr><tr><td style='padding: 8px; background-color: #333;'><b>Test Class</b></td><td style='padding: 8px;'>tests.employeeModule.division.CreateDivisionTest</td></tr><tr><td style='padding: 8px; background-color: #333;'><b>Priority</b></td><td style='padding: 8px;'>Normal</td></tr></table></details>
         </td>
       </tr>
       <tr class="event-row">
         <td><span class="badge log info-bg">Info</span></td>
-        <td>5:57:43 PM</td>
+        <td>6:26:08 PM</td>
         <td>
-          Test Parameters:<br>Parameter 1: LoginTestData{email='arwendymelyn@dibimbing.id', scenario='Login with valid credentials', expectedResult='SUCCESS'}<br>
+          Test Parameters:<br>Parameter 1: DivisionTestData{name='maintenance', description='Business Division', scenario='Create division with valid data', expectedResult='SUCCESS'}<br>
         </td>
       </tr>
       <tr class="event-row">
         <td><span class="badge log info-bg">Info</span></td>
-        <td>5:57:43 PM</td>
+        <td>6:26:08 PM</td>
         <td>
-          <div style='background-color: #1e3a5f; color: #ffffff; padding: 8px; border-radius: 3px; border-left: 4px solid #0066cc; margin-top: 10px;'><b>Test Scenario:</b> Login with valid credentials</div>
+          <div style='background-color: #1e3a5f; color: #ffffff; padding: 8px; border-radius: 3px; border-left: 4px solid #0066cc; margin-top: 10px;'><b>Test Scenario:</b> Create division with valid data</div>
         </td>
       </tr>
       <tr class="event-row">
         <td><span class="badge log pass-bg">Pass</span></td>
-        <td>5:57:50 PM</td>
+        <td>6:26:16 PM</td>
         <td>
           <b>Test Passed Successfully</b>
         </td>
       </tr>
       <tr class="event-row">
         <td><span class="badge log info-bg">Info</span></td>
-        <td>5:57:50 PM</td>
+        <td>6:26:16 PM</td>
         <td>
-          Test completed successfully in Authentication module
+          Test completed successfully in Employee Module module
         </td>
       </tr>
       <tr class="event-row">
         <td><span class="badge log info-bg">Info</span></td>
-        <td>5:57:50 PM</td>
+        <td>6:26:16 PM</td>
         <td>
-          <b>Execution Time:</b> 6849 ms (6.85 seconds)
+          <b>Execution Time:</b> 7538 ms (7.54 seconds)
         </td>
       </tr>
       <tr class="event-row">
         <td><span class="badge log info-bg">Info</span></td>
-        <td>5:57:50 PM</td>
+        <td>6:26:16 PM</td>
         <td>
-          <div style='background-color: #1a3a1a; color: #ffffff; padding: 10px; border-radius: 3px; border-left: 4px solid #28a745;'><b>Success Summary:</b><br>Test: testLoginWithDataDriven<br>Category: Authentication<br>Scenario: Login with valid credentials<br>Status: <span style='color: #28a745; font-weight: bold;'>PASSED</span></div>
+          <div style='background-color: #1a3a1a; color: #ffffff; padding: 10px; border-radius: 3px; border-left: 4px solid #28a745;'><b>Success Summary:</b><br>Test: testCreateDivisionWithDataDriven<br>Category: Employee Module<br>Scenario: Create division with valid data<br>Status: <span style='color: #28a745; font-weight: bold;'>PASSED</span></div>
+        </td>
+      </tr>
+  </tbody>
+</table>
+</div>
+          </div>
+        </li>
+        <li class="test-item"  status="fail" test-id="2"
+          author=""
+          tag="EmployeeModule"
+          device="">
+          <div class="test-detail">
+            <p class="name">testCreateDivisionWithDataDriven</p>
+            <p class="text-sm">
+              <span>6:26:16 PM</span> / <span>00:00:00:776</span>
+              <span class="badge fail-bg log float-right">Fail</span>
+            </p>
+          </div>
+          <div class="test-contents d-none">
+<div class="detail-head">
+<div class="p-v-10">
+<div class="info">
+<h5 class="test-status text-fail">testCreateDivisionWithDataDriven</h5>
+<span class='badge badge-success'>01.20.2026 6:26:16 PM</span>
+<span class='badge badge-danger'>01.20.2026 6:26:16 PM</span>
+<span class='badge badge-default'>00:00:00:776</span>
+&middot; <span class='uri-anchor badge badge-default'>#test-id=2</span>
+<span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
+<span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
+<span title='Expand all nodes' class='badge badge-default pointer float-right et'><i class="fa fa-expand"></i></span>
+</div>
+<div class="m-t-15"><span class="badge badge-pill badge-default">EmployeeModule</span></div>
+<div class="m-t-10 m-l-5"></div>
+</div>
+</div><div class="detail-body mt-4">
+<table class="table table-sm">
+  <thead><tr><th class="status-col">Status</th><th class="timestamp-col">Timestamp</th><th class="details-col">Details</th></tr></thead>
+  <tbody>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>6:26:16 PM</td>
+        <td>
+          <details><summary><b>Test Information</b></summary><table border='1' style='border-collapse: collapse; width: 100%; color: #e0e0e0; border-color: #444;'><tr><td style='padding: 8px; background-color: #333;'><b>Test Name</b></td><td style='padding: 8px;'>testCreateDivisionWithDataDriven</td></tr><tr><td style='padding: 8px; background-color: #333;'><b>Category</b></td><td style='padding: 8px;'>Employee Module</td></tr><tr><td style='padding: 8px; background-color: #333;'><b>Test Class</b></td><td style='padding: 8px;'>tests.employeeModule.division.CreateDivisionTest</td></tr><tr><td style='padding: 8px; background-color: #333;'><b>Priority</b></td><td style='padding: 8px;'>Normal</td></tr></table></details>
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>6:26:16 PM</td>
+        <td>
+          Test Parameters:<br>Parameter 1: DivisionTestData{name='', description='', scenario='create division with empty all field', expectedResult='FAIL'}<br>
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>6:26:16 PM</td>
+        <td>
+          <div style='background-color: #1e3a5f; color: #ffffff; padding: 8px; border-radius: 3px; border-left: 4px solid #0066cc; margin-top: 10px;'><b>Test Scenario:</b> create division with empty all field</div>
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log fail-bg">Fail</span></td>
+        <td>6:26:16 PM</td>
+        <td>
+          <b>Test Failed</b>
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log fail-bg">Fail</span></td>
+        <td>6:26:16 PM</td>
+        <td>
+          Test failed in Employee Module module
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log fail-bg">Fail</span></td>
+        <td>6:26:16 PM</td>
+        <td>
+          <b>Failure Reason:</b> Creation should have failed: create division with empty all field expected [true] but found [false]
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>6:26:16 PM</td>
+        <td>
+          <b>Execution Time:</b> 753 ms (0.75 seconds)
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log fail-bg">Fail</span></td>
+        <td>6:26:16 PM</td>
+        <td>
+          <div style='background-color: #4a1a1a; color: #ffffff; padding: 10px; border-radius: 3px; border-left: 4px solid #dc3545;'><b>Failure Summary:</b><br>Test: testCreateDivisionWithDataDriven<br>Category: Employee Module<br>Scenario: create division with empty all field<br>Status: <span style='color: #dc3545; font-weight: bold;'>FAILED</span><br>Error: <code>Creation should have failed: create division with empty all field expected [true] but found [false]</code></div>
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log fail-bg">Fail</span></td>
+        <td>6:26:16 PM</td>
+        <td>
+          <span class='badge white-text red'>Test Case Failed: testCreateDivisionWithDataDriven</span>
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log fail-bg">Fail</span></td>
+        <td>6:26:16 PM</td>
+        <td>
+          Class: tests.employeeModule.division.CreateDivisionTest
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log fail-bg">Fail</span></td>
+        <td>6:26:16 PM</td>
+        <td>
+          Method: testCreateDivisionWithDataDriven
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log fail-bg">Fail</span></td>
+        <td>6:26:16 PM</td>
+        <td>
+          Module: Employee Module
+        </td>
+      </tr>
+      <tr class="event-row">
+        <td><span class="badge log fail-bg">Fail</span></td>
+        <td>6:26:16 PM</td>
+        <td>
+          <textarea readonly class="code-block">java.lang.AssertionError: Creation should have failed: create division with empty all field expected [true] but found [false]
+	at org.testng.Assert.fail(Assert.java:111)
+	at org.testng.Assert.failNotEquals(Assert.java:1590)
+	at org.testng.Assert.assertTrue(Assert.java:57)
+	at tests.employeeModule.division.CreateDivisionTest.testCreateDivisionWithDataDriven(CreateDivisionTest.java:51)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
+	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:687)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
+	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:995)
+	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
+	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
+	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.testng.TestRunner.privateRun(TestRunner.java:741)
+	at org.testng.TestRunner.run(TestRunner.java:616)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
+	at org.testng.TestNG.runSuites(TestNG.java:1112)
+	at org.testng.TestNG.run(TestNG.java:1079)
+	at org.gradle.api.internal.tasks.testing.testng.TestNGTestClassProcessor.runTests(TestNGTestClassProcessor.java:153)
+	at org.gradle.api.internal.tasks.testing.testng.TestNGTestClassProcessor.stop(TestNGTestClassProcessor.java:95)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.stop(SuiteTestClassProcessor.java:63)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:92)
+	at jdk.proxy1/jdk.proxy1.$Proxy4.stop(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker$3.run(TestWorker.java:200)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:132)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:103)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:63)
+	at org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:122)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:72)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
+</textarea>
+          
         </td>
       </tr>
   </tbody>
@@ -342,7 +527,56 @@ infoEvents: 6
 </div>
 <div class="test-content-detail"><div class="detail-body"></div></div>
 </div></div>
-        </div>
+<div class="test-wrapper row view exception-view attributes-view">
+<div class="test-list">
+<div class="test-list-tools">
+<ul class="tools pull-left"><li><a href=""><span class="font-size-14">Exception</span></a></li></ul>
+<ul class="tools text-right"><li><a href="#"><span class="badge badge-primary">1</span></a></li></ul>
+</div>
+<div class="test-list-wrapper scrollable">
+<ul class="test-list-item">
+<li class="test-item">
+<div class="test-detail">
+<span class="meta">
+<span class='badge log badge-danger'>1</span>
+</span>
+<p class="name">java.lang.AssertionError</p>
+<p class="duration text-sm">1 tests</p>
+</div>
+<div class="test-contents d-none">
+<div class="info">
+<h4>java.lang.AssertionError</h4>
+<span status="fail" class='badge log badge-danger'>1 failed</span>
+</div>
+<table class='table table-sm mt-4'>
+<thead>
+<tr>
+<th class="status-col">Status</th>
+<th class="timestamp-col">Timestamp</th>
+<th>TestName</th>
+</tr>
+</thead>
+<tbody>
+<tr class="tag-test-status" status="fail">
+<td><span class="badge log fail-bg">Fail</span></td>
+<td>18:26:16 PM</td>
+<td>
+<a href="#" class="linked" test-id='2' id='2'>testCreateDivisionWithDataDriven</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="test-content scrollable">
+<div class="test-content-detail">
+<div class="detail-body"></div>
+</div>
+</div>
+</div>        </div>
       </div>
     </div>
   </div>

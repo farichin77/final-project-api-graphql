@@ -3,6 +3,7 @@
 
     <listeners>
         <listener class-name="listeners.ExtentReportListener"/>
+        <listener class-name="listeners.SuiteListener"/>
     </listeners>
 
     <test name="Login Tests">

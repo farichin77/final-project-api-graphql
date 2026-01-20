@@ -4,7 +4,7 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import utils.ExtentManager;
-import utils.SlackNotifier;
+import utils.GlobalTestResultsTracker;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
@@ -15,6 +15,7 @@ public class ExtentReportListener implements ITestListener {
     
     private long suiteStartTime;
     private List<String> failedTestNames = new ArrayList<>();
+    private GlobalTestResultsTracker globalTracker = GlobalTestResultsTracker.getInstance();
 
     @Override
     public void onStart(ITestContext context) {
@@ -32,70 +33,28 @@ public class ExtentReportListener implements ITestListener {
         long executionTime = System.currentTimeMillis() - suiteStartTime;
         
         // Print summary to console
-        System.out.println("=== Test Suite Finished: " + context.getSuite().getName() + " ===");
+        String suiteName = context.getSuite().getName();
+        System.out.println("=== Test Suite Finished: " + suiteName + " ===");
         System.out.println("Total Tests: " + context.getAllTestMethods().length);
         System.out.println("Passed: " + context.getPassedTests().size());
         System.out.println("Failed: " + context.getFailedTests().size());
         System.out.println("Skipped: " + context.getSkippedTests().size());
         
-        // Send Slack notification
-        sendSlackNotification(context, executionTime);
-    }
-    
-    /**
-     * Send test results to Slack
-     */
-    private void sendSlackNotification(ITestContext context, long executionTime) {
-        try {
-            // Get Slack webhook URL from environment variable
-            String webhookUrl = System.getenv("SLACK_WEBHOOK_URL");
-            
-            // Check if Slack notifications are enabled
-            String enableNotifications = System.getenv("SLACK_ENABLE_NOTIFICATIONS");
-            if (enableNotifications != null && !enableNotifications.equalsIgnoreCase("true")) {
-                System.out.println("ℹ Slack notifications are disabled");
-                return;
-            }
-            
-            if (webhookUrl == null || webhookUrl.isEmpty()) {
-                System.out.println("ℹ Slack webhook URL not configured, skipping notification");
-                return;
-            }
-            
-            // Prepare test results summary
-            int total = context.getAllTestMethods().length;
-            int passed = context.getPassedTests().size();
-            int failed = context.getFailedTests().size();
-            int skipped = context.getSkippedTests().size();
-            
-            SlackNotifier.TestResultsSummary summary = 
-                new SlackNotifier.TestResultsSummary(total, passed, failed, skipped);
-            
-            summary.setExecutionTime(executionTime);
-            summary.environment = System.getenv("TEST_ENVIRONMENT") != null ? 
-                System.getenv("TEST_ENVIRONMENT") : "Test";
-            summary.triggeredBy = System.getenv("GITHUB_ACTOR") != null ? 
-                System.getenv("GITHUB_ACTOR") : "Manual";
-            
-            // Add failed test names
-            for (String testName : failedTestNames) {
-                summary.addFailedTest(testName);
-            }
-            
-            // Set report URL if available
-            String reportUrl = System.getenv("REPORT_URL");
-            if (reportUrl != null && !reportUrl.isEmpty()) {
-                summary.reportUrl = reportUrl;
-            }
-            
-            // Send notification
-            SlackNotifier notifier = new SlackNotifier(webhookUrl);
-            notifier.sendTestResults(summary);
-            
-        } catch (Exception e) {
-            System.err.println("Failed to send Slack notification: " + e.getMessage());
-            e.printStackTrace();
+        // Add results to global tracker (NOT sending notification here anymore)
+        int total = context.getAllTestMethods().length;
+        int passed = context.getPassedTests().size();
+        int failed = context.getFailedTests().size();
+        int skipped = context.getSkippedTests().size();
+        
+        globalTracker.addSuiteResults(suiteName, total, passed, failed, skipped);
+        
+        // Add failed test names to global tracker
+        for (String testName : failedTestNames) {
+            globalTracker.addFailedTest(testName);
         }
+        
+        System.out.println("⏰ Suite execution time: " + (executionTime / 1000) + " seconds");
+        System.out.println("✓ Results added to aggregated tracker (notification sent after all suites complete)\n");
     }
 
     @Override
@@ -283,9 +242,9 @@ public class ExtentReportListener implements ITestListener {
     
     /**
      * Extract category name from package name
-     * Module Structure:
-     * - Employee Module: employee, division
-     * - Training Module: training, chapter, content
+     * Simplified to show only 2 main modules:
+     * - Employee Module (includes employee and division)
+     * - Training Module (includes training, chapter, and content)
      */
     private String extractCategoryFromPackage(String packageName) {
         if (packageName == null) return "Unknown";
@@ -294,41 +253,21 @@ public class ExtentReportListener implements ITestListener {
         String[] parts = packageName.split("\\.");
         
         // Check for module-based categorization
-        for (int i = 0; i < parts.length; i++) {
-            String part = parts[i].toLowerCase();
+        for (String part : parts) {
+            String lowerPart = part.toLowerCase();
             
-            // Employee Module
-            if (part.equals("employeemodule")) {
-                // Check sub-module
-                if (i + 1 < parts.length) {
-                    String subModule = parts[i + 1].toLowerCase();
-                    if (subModule.equals("division")) {
-                        return "Employee Module - Division";
-                    } else if (subModule.equals("employee")) {
-                        return "Employee Module - Employee";
-                    }
-                }
+            // Employee Module (includes division and employee)
+            if (lowerPart.equals("employeemodule")) {
                 return "Employee Module";
             }
             
-            // Training Module
-            if (part.equals("trainingmodule")) {
-                // Check sub-module
-                if (i + 1 < parts.length) {
-                    String subModule = parts[i + 1].toLowerCase();
-                    if (subModule.equals("chapter")) {
-                        return "Training Module - Chapter";
-                    } else if (subModule.equals("content")) {
-                        return "Training Module - Content";
-                    } else if (subModule.equals("training")) {
-                        return "Training Module - Training";
-                    }
-                }
+            // Training Module (includes training, chapter, and content)
+            if (lowerPart.equals("trainingmodule")) {
                 return "Training Module";
             }
             
             // Authentication (standalone)
-            if (part.equals("auth")) {
+            if (lowerPart.equals("auth")) {
                 return "Authentication";
             }
         }
