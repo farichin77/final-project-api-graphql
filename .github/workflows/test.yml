@@ -46,32 +46,7 @@ jobs:
         TEST_ENVIRONMENT: 'CI/CD'
         GITHUB_ACTOR: ${{ github.actor }}
         REPORT_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-      run: |
-        echo "════════════════════════════════════════════════"
-        echo "🔍 PRE-TEST CONFIGURATION CHECK"
-        echo "════════════════════════════════════════════════"
-        echo ""
-        echo "📌 Environment Variables:"
-        echo "  • SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL != '' && '✅ CONFIGURED' || '❌ NOT SET' }}"
-        echo "  • SLACK_ENABLE_NOTIFICATIONS: $SLACK_ENABLE_NOTIFICATIONS"
-        echo "  • TEST_ENVIRONMENT: $TEST_ENVIRONMENT"
-        echo "  • GITHUB_ACTOR: $GITHUB_ACTOR"
-        echo "  • REPORT_URL: $REPORT_URL"
-        echo ""
-        echo "⚠️  IMPORTANT:"
-        if [ -z "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
-          echo "  ❌ SLACK_WEBHOOK_URL is NOT configured!"
-          echo "  👉 Go to: Settings → Secrets and variables → Actions"
-          echo "  👉 Add: Name='SLACK_WEBHOOK_URL' Value='Your Webhook URL'"
-        else
-          echo "  ✅ SLACK_WEBHOOK_URL is configured"
-        fi
-        echo ""
-        echo "════════════════════════════════════════════════"
-        echo "▶️  RUNNING TESTS..."
-        echo "════════════════════════════════════════════════"
-        echo ""
-        ./gradlew test --no-daemon
+      run: ./gradlew test --no-daemon
       continue-on-error: true
 
     - name: Upload Extent Report

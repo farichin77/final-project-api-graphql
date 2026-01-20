@@ -54,7 +54,6 @@ public class ExtentReportListener implements ITestListener, ISuiteListener {
     @Override
     public void onFinish(ISuite suite) {
         // Aggregate all test results from this suite
-        int total = 0;
         int passed = 0;
         int failed = 0;
         int skipped = 0;
@@ -62,11 +61,13 @@ public class ExtentReportListener implements ITestListener, ISuiteListener {
         java.util.Map<String, org.testng.ISuiteResult> results = suite.getResults();
         for (org.testng.ISuiteResult result : results.values()) {
             org.testng.ITestContext context = result.getTestContext();
-            total += context.getAllTestMethods().length;
             passed += context.getPassedTests().size();
             failed += context.getFailedTests().size();
             skipped += context.getSkippedTests().size();
         }
+        
+        // Total is sum of all executed tests (not definitions)
+        int total = passed + failed + skipped;
         
         // Add results only once per suite
         resultsManager.addSuiteResults(suite.getName(), total, passed, failed, skipped);

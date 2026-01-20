@@ -145,11 +145,6 @@ public class TestResultsManager {
         String statusText = failedTests.get() == 0 ? "PASSED" : "FAILED";
         String color = failedTests.get() == 0 ? "#2eb886" : "#ff0000";
         
-        // Calculate pass percentage (cap at 100%)
-        int total = totalTests.get();
-        int passCount = passedTests.get();
-        double passPercentage = total > 0 ? Math.min((passCount * 100.0 / total), 100.0) : 0;
-        
         // Build blocks for rich formatting
         JsonArray blocks = new JsonArray();
         
@@ -177,8 +172,8 @@ public class TestResultsManager {
         StringBuilder resultsMarkdown = new StringBuilder();
         resultsMarkdown.append("*📊 Test Results Summary*\n");
         resultsMarkdown.append("─────────────────────────────\n");
-        resultsMarkdown.append(String.format("*Total Tests:*     %d\n", total));
-        resultsMarkdown.append(String.format("✅ *Passed:*        %d (%.1f%%)\n", passedTests.get(), passPercentage));
+        resultsMarkdown.append(String.format("*Total Tests:*     %d\n", totalTests.get()));
+        resultsMarkdown.append(String.format("✅ *Passed:*        %d\n", passedTests.get()));
         resultsMarkdown.append(String.format("❌ *Failed:*        %d\n", failedTests.get()));
         resultsMarkdown.append(String.format("⏭️ *Skipped:*       %d\n", skippedTests.get()));
         resultsMarkdown.append("─────────────────────────────");
