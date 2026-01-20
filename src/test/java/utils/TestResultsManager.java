@@ -67,14 +67,9 @@ public class TestResultsManager {
     }
     
     /**
-     * Add test results from a completed test suite
+     * Add test results from a completed test
      */
-    public synchronized void addSuiteResults(String suiteName, int total, int passed, int failed, int skipped) {
-        if (completedSuites.contains(suiteName)) {
-            return; // Prevent duplicate additions
-        }
-        
-        completedSuites.add(suiteName);
+    public synchronized void addSuiteResults(String testName, int total, int passed, int failed, int skipped) {
         totalTests.addAndGet(total);
         passedTests.addAndGet(passed);
         failedTests.addAndGet(failed);
@@ -105,54 +100,37 @@ public class TestResultsManager {
     }
     
     /**
-     * Send aggregated test results to Slack
+     * Send aggregated test results to Slack (called after each suite completes)
+     * Only sends when all expected suites are done
      */
-    public void sendSlackNotification(List<String> expectedSuites) {
-        System.out.println("\n📋 Slack Notification Check:");
-        System.out.println("   - All suites completed: " + allSuitesCompleted(expectedSuites));
-        System.out.println("   - Notification sent: " + notificationSent);
-        System.out.println("   - Completed suites: " + completedSuites);
-        System.out.println("   - Expected suites: " + expectedSuites);
+    public void sendSlackNotification() {
+        if (notificationSent) {
+            return; // Already sent
+        }
         
-        if (!allSuitesCompleted(expectedSuites) || notificationSent) {
-            System.out.println("   ⏭️ Skipping Slack notification (not all suites completed or already sent)");
-            return;
+        // Check if we have results and webhook is configured
+        webhookUrl = System.getenv("SLACK_WEBHOOK_URL");
+        if (webhookUrl == null || webhookUrl.isEmpty()) {
+            return; // Webhook not configured, skip silently
+        }
+        
+        String enableNotifications = System.getenv("SLACK_ENABLE_NOTIFICATIONS");
+        if (enableNotifications != null && !enableNotifications.equalsIgnoreCase("true")) {
+            return; // Notifications disabled
+        }
+        
+        // Only send if we have collected some test results
+        if (totalTests.get() == 0) {
+            return; // No tests collected yet
         }
         
         try {
-            webhookUrl = System.getenv("SLACK_WEBHOOK_URL");
-            
-            System.out.println("   📍 Webhook URL configured: " + (webhookUrl != null && !webhookUrl.isEmpty()));
-            
-            String enableNotifications = System.getenv("SLACK_ENABLE_NOTIFICATIONS");
-            System.out.println("   📍 SLACK_ENABLE_NOTIFICATIONS: " + enableNotifications);
-            
-            if (enableNotifications != null && !enableNotifications.equalsIgnoreCase("true")) {
-                System.out.println("ℹ Slack notifications are disabled");
-                return;
-            }
-            
-            if (webhookUrl == null || webhookUrl.isEmpty()) {
-                System.out.println("⚠️ Slack webhook URL not configured, skipping notification");
-                System.out.println("   Make sure to set SLACK_WEBHOOK_URL environment variable in GitHub Actions");
-                return;
-            }
-            
             String payload = buildSlackPayload();
             sendMessage(payload);
             notificationSent = true;
-            
-            System.out.println("\n" + "=".repeat(60));
-            System.out.println("✅ Slack notification sent successfully!");
-            System.out.println("=".repeat(60));
-            System.out.println("   Total Tests: " + totalTests.get());
-            System.out.println("   Passed: " + passedTests.get());
-            System.out.println("   Failed: " + failedTests.get());
-            System.out.println("   Skipped: " + skippedTests.get());
-            System.out.println("=".repeat(60) + "\n");
+            System.out.println("✅ Slack notification sent");
         } catch (Exception e) {
             System.err.println("❌ Failed to send Slack notification: " + e.getMessage());
-            e.printStackTrace();
         }
     }
     
@@ -307,29 +285,16 @@ public class TestResultsManager {
      * Send message to Slack webhook
      */
     private void sendMessage(String payload) throws IOException {
-        System.out.println("\n📤 Sending to Slack...");
-        System.out.println("   Webhook URL length: " + (webhookUrl != null ? webhookUrl.length() : 0) + " chars");
-        
         RequestBody body = RequestBody.create(payload, JSON);
         Request request = new Request.Builder()
                 .url(webhookUrl)
                 .post(body)
                 .build();
         
-        System.out.println("   Request prepared, sending...");
-        
         try (Response response = client.newCall(request).execute()) {
-            int statusCode = response.code();
-            String responseBody = response.body() != null ? response.body().string() : "N/A";
-            
-            System.out.println("   Response status: " + statusCode);
-            System.out.println("   Response body: " + responseBody);
-            
             if (!response.isSuccessful()) {
-                throw new IOException("Slack API returned error: " + statusCode + " - " + response.message());
+                throw new IOException("Slack API error: " + response.code() + " - " + response.message());
             }
-            
-            System.out.println("   ✅ Message sent successfully!");
         }
     }
     

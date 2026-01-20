@@ -1,26 +1,15 @@
 package listeners;
 
-import org.testng.ITestContext;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
+import org.testng.*;
 import utils.ExtentManager;
 import utils.TestResultsManager;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class ExtentReportListener implements ITestListener {
-    
-    // Expected test suites to track completion
-    private static final List<String> EXPECTED_SUITES = Arrays.asList(
-        "Login Tests",
-        "Create and Update Tests",
-        "Get Data Verification Tests",
-        "Delete Tests"
-    );
+public class ExtentReportListener implements ITestListener, ISuiteListener {
     
     private long suiteStartTime;
     private List<String> failedTestNames = new ArrayList<>();
@@ -31,9 +20,35 @@ public class ExtentReportListener implements ITestListener {
         ExtentManager.getInstance();
         suiteStartTime = System.currentTimeMillis();
         failedTestNames.clear();
-        System.out.println("=== Test Suite Started: " + context.getSuite().getName() + " ===");
+    }
+
+    @Override
+    public void onFinish(ITestContext context) {
+        ExtentManager.flush();
         
-        // Initialize results manager on first suite start
+        // Calculate execution time
+        long executionTime = System.currentTimeMillis() - suiteStartTime;
+        
+        // Collect results
+        String testName = context.getName();
+        int total = context.getAllTestMethods().length;
+        int passed = context.getPassedTests().size();
+        int failed = context.getFailedTests().size();
+        int skipped = context.getSkippedTests().size();
+        
+        resultsManager.addSuiteResults(testName, total, passed, failed, skipped);
+        
+        // Add failed test names
+        for (String failedTest : failedTestNames) {
+            resultsManager.addFailedTest(failedTest);
+        }
+        
+        failedTestNames.clear();
+    }
+    
+    @Override
+    public void onStart(ISuite suite) {
+        // Initialize on first suite start
         if (resultsManager.getCompletedSuites().isEmpty()) {
             resultsManager.setEnvironment(System.getenv("TEST_ENVIRONMENT") != null ? 
                 System.getenv("TEST_ENVIRONMENT") : "CI/CD");
@@ -48,41 +63,26 @@ public class ExtentReportListener implements ITestListener {
     }
 
     @Override
-    public void onFinish(ITestContext context) {
-        ExtentManager.flush();
+    public void onFinish(ISuite suite) {
+        // Count all test results from this suite
+        int total = 0;
+        int passed = 0;
+        int failed = 0;
+        int skipped = 0;
         
-        // Calculate execution time
-        long executionTime = System.currentTimeMillis() - suiteStartTime;
-        
-        // Print summary to console
-        String suiteName = context.getSuite().getName();
-        System.out.println("=== Test Suite Finished: " + suiteName + " ===");
-        System.out.println("Total Tests: " + context.getAllTestMethods().length);
-        System.out.println("Passed: " + context.getPassedTests().size());
-        System.out.println("Failed: " + context.getFailedTests().size());
-        System.out.println("Skipped: " + context.getSkippedTests().size());
-        
-        // Add results to results manager
-        int total = context.getAllTestMethods().length;
-        int passed = context.getPassedTests().size();
-        int failed = context.getFailedTests().size();
-        int skipped = context.getSkippedTests().size();
-        
-        resultsManager.addSuiteResults(suiteName, total, passed, failed, skipped);
-        
-        // Add failed test names to results manager
-        for (String testName : failedTestNames) {
-            resultsManager.addFailedTest(testName);
+        java.util.Map<String, org.testng.ISuiteResult> results = suite.getResults();
+        for (org.testng.ISuiteResult result : results.values()) {
+            org.testng.ITestContext context = result.getTestContext();
+            passed += context.getPassedTests().size();
+            failed += context.getFailedTests().size();
+            skipped += context.getSkippedTests().size();
         }
         
-        resultsManager.markSuiteCompleted(suiteName);
+        total = passed + failed + skipped;
         
-        System.out.println("⏰ Suite execution time: " + (executionTime / 1000) + " seconds");
-        
-        // Check if all suites are completed and send notification
-        resultsManager.sendSlackNotification(EXPECTED_SUITES);
-        
-        System.out.println("✓ Results aggregated\n");
+        // Mark suite as completed and try to send notification
+        resultsManager.markSuiteCompleted(suite.getName());
+        resultsManager.sendSlackNotification();
     }
 
     @Override
