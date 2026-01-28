@@ -25,8 +25,7 @@ public class ExtentReportListener implements ITestListener, ISuiteListener {
     @Override
     public void onFinish(ITestContext context) {
         ExtentManager.flush();
-        
-        // Track failed tests
+
         for (ITestResult result : context.getFailedTests().getAllResults()) {
             String testName = result.getMethod().getMethodName();
             if (!failedTestNames.contains(testName)) {
