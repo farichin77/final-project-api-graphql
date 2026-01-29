@@ -1,0 +1,3 @@
+employeeIds,divisionId,scenario,expectedResult
+FROM_JSON,FROM_JSON,Transfer employee to division with valid data,SUCCESS
+,,Transfer employee with empty employee IDs,FAIL

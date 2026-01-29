@@ -6,4 +6,5 @@ public class FilePaths {
     public static final String CONTENT_DATA_JSON = "src/test/resources/training-data/content-id.json";
     public static final String EMPLOYEE_DATA_JSON = "src/test/resources/employee-data/employee-id.json";
     public static final String DIVISION_DATA_JSON = "src/test/resources/employee-data/division-id.json";
+    public static final String ASSIGNED_EMPLOYEE_DATA_JSON = "src/test/resources/training-data/assigned-employee-id.json";
 }

@@ -1,0 +1,3 @@
+mutation updateEmployeesDivision($employeeIds: [String!]!, $divisionId: String!) {
+  updateEmployeesDivision(employeeIds: $employeeIds, divisionId: $divisionId)
+}

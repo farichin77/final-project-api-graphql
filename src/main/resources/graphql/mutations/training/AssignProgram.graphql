@@ -1,0 +1,3 @@
+mutation assignProgram($input: AssignProgramInput!) {
+  assignProgram(input: $input)
+}

@@ -51,7 +51,7 @@ phone number field","1. Login
     id
   }
 }",Medium,FAIL,SUCCESS,FAILED,Automated
-Employee,TC-EMPLOYEE-04, Update employee with valid data,"1. Login 
+Employee,TC-EMPLOYEE-05,Update employee with valid data,"1. Login
 2. Prepare Update Employee Variable 
 3. Execute UpdateEmployee mutation 
 4. Verify updated data","mutation UpdateEmployee($id: ID!, $input: EmployeeInput!) {
@@ -60,7 +60,7 @@ Employee,TC-EMPLOYEE-04, Update employee with valid data,"1. Login
   }
 }
 ",High,SUCCESS,SUCCESS,PASSED,Automated
-Employee,TC-EMPLOYEE-05,verify get emplyee,"1. Login 
+Employee,TC-EMPLOYEE-06,verify get emplyee,"1. Login
 2. Prepare ID 
 3. Execute Get Employee query 
 4. Verify employee data","query GetEmployee($id: ID!) {
@@ -70,14 +70,14 @@ Employee,TC-EMPLOYEE-05,verify get emplyee,"1. Login
   }
 }
 ",Medium,SUCCESS,SUCCESS,PASSED,Automated
-Employee,TC-EMPLOYEE-06,verify delete emplyee success,"1. Login 
+Employee,TC-EMPLOYEE-07,verify delete emplyee success,"1. Login
 2. Prepare ID 
 3. Execute Delete Employee mutation 
 4. Verify response is true","mutation DeleteEmployee($id: ID!) {
   deleteEmployee(id: $id)
 }
 ",High,SUCCESS,SUCCESS,PASSED,Automated
-Employee,TC-EMPLOYEE-07,Create division with valid data,"1. Login 
+Employee,TC-EMPLOYEE-08,Create division with valid data,"1. Login
 2. Prepare Division Input 
 3. Execute Create Division mutation 
 4. Verify ID","mutation CreateDivision($input: DivisionInput!) {
@@ -86,7 +86,7 @@ Employee,TC-EMPLOYEE-07,Create division with valid data,"1. Login
   }
 }
 ",High,SUCCESS,SUCCESS,PASSED,Automated
-Employee,TC-EMPLOYEE-08,create division with empty all field,"1. Login 
+Employee,TC-EMPLOYEE-09,create division with empty all field,"1. Login
 2. Prepare empty DivisionInput 
 3. Execute Create Division mutation 
 4. Verify failure","mutation CreateDivision($input: DivisionInput!) {
@@ -95,7 +95,7 @@ Employee,TC-EMPLOYEE-08,create division with empty all field,"1. Login
   }
 }
 ",Medium,FAIL,SUCCESS,FAILED,Automated
-Employee,TC-EMPLOYEE-09,Update division with valid data,"1. Login 
+Employee,TC-EMPLOYEE-10,Update division with valid data,"1. Login
 2. Prepare Update DivisionVariable 
 3. Execute Update Division mutation 
 4. Verify response","mutation UpdateDivision($id: ID!, $input: DivisionInput!) {
@@ -104,7 +104,7 @@ Employee,TC-EMPLOYEE-09,Update division with valid data,"1. Login
   }
 }
 ",High,SUCCESS,SUCCESS,PASSED,Automated
-Employee,TC-EMPLOYEE-10,Update invalid division empty all field,"1. Login 
+Employee,TC-EMPLOYEE-11,Update invalid division empty all field,"1. Login
 2. Prepare empty Update Division Variable 
 3. Execute Update Division mutation 
 4. Verify failure","mutation UpdateDivision($id: ID!, $input: DivisionInput!) {
@@ -113,7 +113,7 @@ Employee,TC-EMPLOYEE-10,Update invalid division empty all field,"1. Login
   }
 }
 ",Medium,FAIL,SUCCESS,FAILED,Automated
-Employee,TC-EMPLOYEE-11,verify get division success,"1. Login 
+Employee,TC-EMPLOYEE-12,verify get division success,"1. Login
 2. Prepare ID 
 3. Execute GetDivision query 
 4. Verify division data","query GetDivision($id: ID!) {
@@ -123,13 +123,27 @@ Employee,TC-EMPLOYEE-11,verify get division success,"1. Login
   }
 }
 ",Medium,SUCCESS,SUCCESS,PASSED,Automated
-Employee,TC-EMPLOYEE-12,verify delete division success,"1. Login 
+Employee,TC-EMPLOYEE-13,verify delete division success,"1. Login
 2. Prepare ID 
 3. Execute Delete Division mutation 
 4. Verify response","mutation DeleteDivision($id: ID!) {
   deleteDivision(id: $id)
 }
 ",High,SUCCESS,SUCCESS,PASSED,Automated
+Employee,TC-EMPLOYEE-14,Transfer employee to division with valid data,"1. Login
+2. Prepare employeeIds and divisionId 
+3. Execute updateEmployeesDivision mutation 
+4. Verify response is true","mutation updateEmployeesDivision($employeeIds: [String!]!, $divisionId: String!) {
+  updateEmployeesDivision(employeeIds: $employeeIds, divisionId: $divisionId)
+}
+",High,SUCCESS,SUCCESS,PASSED,Automated
+Employee,TC-EMPLOYEE-15,Transfer employee with empty employee IDs,"1. Login
+2. Prepare empty employeeIds 
+3. Execute updateEmployeesDivision mutation 
+4. Verify failure/GraphQL error","mutation updateEmployeesDivision($employeeIds: [String!]!, $divisionId: String!) {
+  updateEmployeesDivision(employeeIds: $employeeIds, divisionId: $divisionId)
+}
+",Medium,FAIL,FAIL,PASSED,Automated
 Training,TC-TRAINING-01,Create training valid data,"1. Login 
 2. Prepare ProgramInput 
 3. Execute CreateTraining mutation 
@@ -322,8 +336,10 @@ Training,TC-TRAINING-22,verify delete content article success,"1. Login
 3. Execute Delete Content mutation 
 4. Verify response","mutation DeleteContent($id: ID!) {
   deleteContent(id: $id)
+4. Verify response","mutation DeleteContent($id: ID!) {
+  deleteContent(id: $id)
 }
-",High,SUCCESS,SUCCESS,PASSED,Automated
+",High,SUCCESS,SUCCESS,Automated,""
 Training,TC-TRAINING-23,verify delete content test success,"1. Login 
 2. Prepare Test ID 
 3. Execute DeleteContent mutation 
@@ -331,3 +347,17 @@ Training,TC-TRAINING-23,verify delete content test success,"1. Login
   deleteContent(id: $id)
 }
 ",High,SUCCESS,SUCCESS,PASSED,Automated
+Training,TC-TRAINING-24,Assign employee to training program with valid data,"1. Login 
+2. Prepare AssignProgramInput with employee IDs and program ID 
+3. Execute assignProgram mutation 
+4. Verify assignment success","mutation assignProgram($input: AssignProgramInput!) {
+  assignProgram(input: $input)
+}
+",High,SUCCESS,SUCCESS,PASSED,Automated
+Training,TC-TRAINING-25,Assign employee with invalid date range (start date after end date),"1. Login 
+2. Prepare AssignProgramInput with start date later than end date 
+3. Execute assignProgram mutation 
+4. Verify failure","mutation assignProgram($input: AssignProgramInput!) {
+  assignProgram(input: $input)
+}
+",Medium,FAIL,FAIL,PASSED,Automated

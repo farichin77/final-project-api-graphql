@@ -364,6 +364,7 @@ export SLACK_ENABLE_NOTIFICATIONS="true"
 - Get Employee
 - Update Employee
 - Delete Employee
+- Transfer Employee to Division
 
 #### Division Management
 - Create Division
@@ -390,6 +391,10 @@ export SLACK_ENABLE_NOTIFICATIONS="true"
 - Get Content
 - Update Content
 - Delete Content
+
+#### Assigned Employee
+- Assign Employee to Training Program
+- Validate Date Range
 
 ---
 

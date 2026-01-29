@@ -35,7 +35,7 @@
 <a href="#"><span class="badge badge-primary">API Testing Execution Results</span></a>
 </li>
 <li class="m-r-10">
-<a href="#"><span class="badge badge-primary">Wednesday, 28 Jan 2026 16:42:34</span></a>
+<a href="#"><span class="badge badge-primary">Thursday, 29 Jan 2026 12:55:05</span></a>
 </li>
 </ul>
 </div>
@@ -52,11 +52,6 @@
 <span class="ico"><i class="fa fa-list"></i></span>
 </a>
 </li>
-<li class="nav-item dropdown" onclick="toggleView('exception-view')">
-<a id="nav-exception" class="dropdown-toggle" href="#">
-<span class="ico"><i class="fa fa-bug"></i></span>
-</a>
-</li>
 </ul>
 </div>
 </div>      <div class="vcontainer">
@@ -66,25 +61,25 @@
 <div class="col-md-3">
 <div class="card"><div class="card-body">
 <p class="m-b-0">Started</p>
-<h3>Wednesday, 28 Jan 2026 16:42:34</h3>
+<h3>Thursday, 29 Jan 2026 12:55:05</h3>
 </div></div>
 </div>
 <div class="col-md-3">
 <div class="card"><div class="card-body">
 <p class="m-b-0">Ended</p>
-<h3>Wednesday, 28 Jan 2026 16:42:45</h3>
+<h3>Thursday, 29 Jan 2026 12:55:16</h3>
 </div></div>
 </div>
 <div class="col-md-3">
 <div class="card"><div class="card-body">
 <p class="m-b-0 text-pass">Tests Passed</p>
-<h3>0</h3>
+<h3>1</h3>
 </div></div>
 </div>
 <div class="col-md-3">
 <div class="card"><div class="card-body">
 <p class="m-b-0 text-fail">Tests Failed</p>
-<h3>1</h3>
+<h3>0</h3>
 </div></div>
 </div>
 </div>
@@ -100,12 +95,12 @@
 </div>
 </div>
 <div class="card-footer">
-<div><small data-tooltip='0%'>
-<b>0</b> tests passed
+<div><small data-tooltip='100%'>
+<b>1</b> tests passed
 </small>
 </div>
 <div>
-<small data-tooltip='100%'><b>1</b> tests failed,
+<small data-tooltip='0%'><b>0</b> tests failed,
 <b>0</b> skipped, <b data-tooltip='0%'>0</b> others
 </small>
 </div>
@@ -123,10 +118,10 @@
 </div>
 </div>
 <div class="card-footer">
-<div><small data-tooltip='0%'><b>0</b> events passed</small></div>
+<div><small data-tooltip='20%'><b>1</b> events passed</small></div>
 <div>
-<small data-tooltip='81%'><b>9</b> events failed,
-<b data-tooltip='%'>2</b> others
+<small data-tooltip='0%'><b>0</b> events failed,
+<b data-tooltip='%'>4</b> others
 </small>
 </div>
 </div>
@@ -142,7 +137,7 @@
 </div></div>
 <script>
 var timeline = {
-"testDeleteDivisionFromJson":7.885
+"testDeleteDivisionFromJson":9.199
 };
 </script>
 <div class="row">
@@ -153,11 +148,11 @@ var timeline = {
 <thead><tr class="bg-gray"><th>Name</th><th>Passed</th><th>Failed</th><th>Skipped</th><th>Others</th><th>Passed %</th></tr></thead><tbody>
 <tr>
 <td>EmployeeModule</td>
-<td>0</td>
 <td>1</td>
 <td>0</td>
 <td>0</td>
-<td>0%</td>
+<td>0</td>
+<td>100%</td>
 </tr>
 </tbody>
 </table></div>
@@ -206,8 +201,8 @@ var timeline = {
 <script>
 var statusGroup = {
 parentCount: 5,
-passParent: 0,
-failParent: 1,
+passParent: 1,
+failParent: 0,
 warningParent: 0,
 skipParent: 0,
 childCount: 5,
@@ -223,11 +218,11 @@ warningGrandChild: 0,
 skipGrandChild: 0,
 infoGrandChild: 0,
 eventsCount: 5,
-passEvents: 0,
-failEvents: 9,
+passEvents: 1,
+failEvents: 0,
 warningEvents: 0,
 skipEvents: 0,
-infoEvents: 2
+infoEvents: 4
 };
 </script><div class="test-wrapper row view test-view">
   <div class="test-list">
@@ -239,7 +234,7 @@ infoEvents: 2
 <li class="dropdown">
 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-exclamation-circle"></i></a>
 <ul id="status-toggle" class="dropdown-menu dropdown-md p-v-0">
-<a class="dropdown-item" status="fail" href="#"><span>Fail</span><span class="status danger"></span></a>
+<a class="dropdown-item" status="pass" href="#"><span>Pass</span><span class="status success"></span></a>
 <div class="dropdown-divider"></div>
 <a status="clear" class="dropdown-item" href="#"><span>Clear</span><span class="pull-right"><i class="fa fa-close"></i></span></a>
 </ul>
@@ -253,25 +248,25 @@ infoEvents: 2
 </ul>
 </div>    <div class="test-list-wrapper scrollable">
       <ul class="test-list-item">
-        <li class="test-item"  status="fail" test-id="1"
+        <li class="test-item"  status="pass" test-id="1"
           author=""
           tag="EmployeeModule"
           device="">
           <div class="test-detail">
             <p class="name">testDeleteDivisionFromJson</p>
             <p class="text-sm">
-              <span>4:42:36 PM</span> / <span>00:00:07:885</span>
-              <span class="badge fail-bg log float-right">Fail</span>
+              <span>12:55:06 PM</span> / <span>00:00:09:199</span>
+              <span class="badge pass-bg log float-right">Pass</span>
             </p>
           </div>
           <div class="test-contents d-none">
 <div class="detail-head">
 <div class="p-v-10">
 <div class="info">
-<h5 class="test-status text-fail">testDeleteDivisionFromJson</h5>
-<span class='badge badge-success'>01.28.2026 4:42:36 PM</span>
-<span class='badge badge-danger'>01.28.2026 4:42:44 PM</span>
-<span class='badge badge-default'>00:00:07:885</span>
+<h5 class="test-status text-pass">testDeleteDivisionFromJson</h5>
+<span class='badge badge-success'>01.29.2026 12:55:06 PM</span>
+<span class='badge badge-danger'>01.29.2026 12:55:15 PM</span>
+<span class='badge badge-default'>00:00:09:199</span>
 &middot; <span class='uri-anchor badge badge-default'>#test-id=1</span>
 <span title='Skip to the next failed step' class='badge badge-danger pointer float-right ne ml-1'><i class="fa fa-fast-forward"></i></span>
 <span title='Collapse all nodes' class='badge badge-default pointer float-right ct ml-1'><i class="fa fa-compress"></i></span>
@@ -286,129 +281,37 @@ infoEvents: 2
   <tbody>
       <tr class="event-row">
         <td><span class="badge log info-bg">Info</span></td>
-        <td>4:42:36 PM</td>
+        <td>12:55:06 PM</td>
         <td>
           <details><summary><b>Test Information</b></summary><table border='1' style='border-collapse: collapse; width: 100%; color: #e0e0e0; border-color: #444;'><tr><td style='padding: 8px; background-color: #333;'><b>Test Name</b></td><td style='padding: 8px;'>testDeleteDivisionFromJson</td></tr><tr><td style='padding: 8px; background-color: #333;'><b>Category</b></td><td style='padding: 8px;'>Employee Module</td></tr><tr><td style='padding: 8px; background-color: #333;'><b>Test Class</b></td><td style='padding: 8px;'>tests.employeeModule.division.DeleteDivisionTest</td></tr><tr><td style='padding: 8px; background-color: #333;'><b>Priority</b></td><td style='padding: 8px;'>Normal</td></tr></table></details>
         </td>
       </tr>
       <tr class="event-row">
-        <td><span class="badge log fail-bg">Fail</span></td>
-        <td>4:42:44 PM</td>
+        <td><span class="badge log pass-bg">Pass</span></td>
+        <td>12:55:15 PM</td>
         <td>
-          <b>Test Failed</b>
-        </td>
-      </tr>
-      <tr class="event-row">
-        <td><span class="badge log fail-bg">Fail</span></td>
-        <td>4:42:44 PM</td>
-        <td>
-          Test failed in Employee Module module
-        </td>
-      </tr>
-      <tr class="event-row">
-        <td><span class="badge log fail-bg">Fail</span></td>
-        <td>4:42:44 PM</td>
-        <td>
-          <b>Failure Reason:</b> Parse error: Cannot invoke "java.lang.Boolean.booleanValue()" because the return value of "io.restassured.internal.common.path.ObjectConverter.convertObjectTo(Object, java.lang.Class)" is null
+          <b>Test Passed Successfully</b>
         </td>
       </tr>
       <tr class="event-row">
         <td><span class="badge log info-bg">Info</span></td>
-        <td>4:42:44 PM</td>
+        <td>12:55:15 PM</td>
         <td>
-          <b>Execution Time:</b> 7886 ms (7.89 seconds)
+          Test completed successfully in Employee Module module
         </td>
       </tr>
       <tr class="event-row">
-        <td><span class="badge log fail-bg">Fail</span></td>
-        <td>4:42:44 PM</td>
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>12:55:15 PM</td>
         <td>
-          <div style='background-color: #4a1a1a; color: #ffffff; padding: 10px; border-radius: 3px; border-left: 4px solid #dc3545;'><b>Failure Summary:</b><br>Test: testDeleteDivisionFromJson<br>Category: Employee Module<br>Status: <span style='color: #dc3545; font-weight: bold;'>FAILED</span><br>Error: <code>Parse error: Cannot invoke "java.lang.Boolean.booleanValue()" because the return value of "io.restassured.internal.common.path.ObjectConverter.convertObjectTo(Object, java.lang.Class)" is null</code></div>
+          <b>Execution Time:</b> 9199 ms (9.20 seconds)
         </td>
       </tr>
       <tr class="event-row">
-        <td><span class="badge log fail-bg">Fail</span></td>
-        <td>4:42:44 PM</td>
+        <td><span class="badge log info-bg">Info</span></td>
+        <td>12:55:15 PM</td>
         <td>
-          <span class='badge white-text red'>Test Case Failed: testDeleteDivisionFromJson</span>
-        </td>
-      </tr>
-      <tr class="event-row">
-        <td><span class="badge log fail-bg">Fail</span></td>
-        <td>4:42:44 PM</td>
-        <td>
-          Class: tests.employeeModule.division.DeleteDivisionTest
-        </td>
-      </tr>
-      <tr class="event-row">
-        <td><span class="badge log fail-bg">Fail</span></td>
-        <td>4:42:44 PM</td>
-        <td>
-          Method: testDeleteDivisionFromJson
-        </td>
-      </tr>
-      <tr class="event-row">
-        <td><span class="badge log fail-bg">Fail</span></td>
-        <td>4:42:44 PM</td>
-        <td>
-          Module: Employee Module
-        </td>
-      </tr>
-      <tr class="event-row">
-        <td><span class="badge log fail-bg">Fail</span></td>
-        <td>4:42:44 PM</td>
-        <td>
-          <textarea readonly class="code-block">java.lang.AssertionError: Parse error: Cannot invoke "java.lang.Boolean.booleanValue()" because the return value of "io.restassured.internal.common.path.ObjectConverter.convertObjectTo(Object, java.lang.Class)" is null
-	at org.testng.Assert.fail(Assert.java:111)
-	at tests.employeeModule.division.DeleteDivisionTest.testDeleteDivisionFromJson(DeleteDivisionTest.java:41)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
-	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:687)
-	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
-	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
-	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:995)
-	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
-	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
-	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-	at org.testng.TestRunner.privateRun(TestRunner.java:741)
-	at org.testng.TestRunner.run(TestRunner.java:616)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:312)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
-	at org.testng.TestNG.runSuites(TestNG.java:1112)
-	at org.testng.TestNG.run(TestNG.java:1079)
-	at org.gradle.api.internal.tasks.testing.testng.TestNGTestClassProcessor.runTests(TestNGTestClassProcessor.java:153)
-	at org.gradle.api.internal.tasks.testing.testng.TestNGTestClassProcessor.stop(TestNGTestClassProcessor.java:95)
-	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.stop(SuiteTestClassProcessor.java:63)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)
-	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
-	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
-	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:92)
-	at jdk.proxy1/jdk.proxy1.$Proxy4.stop(Unknown Source)
-	at org.gradle.api.internal.tasks.testing.worker.TestWorker$3.run(TestWorker.java:200)
-	at org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:132)
-	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:103)
-	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:63)
-	at org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)
-	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:122)
-	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:72)
-	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
-	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
-</textarea>
-          
+          <div style='background-color: #1a3a1a; color: #ffffff; padding: 10px; border-radius: 3px; border-left: 4px solid #28a745;'><b>Success Summary:</b><br>Test: testDeleteDivisionFromJson<br>Category: Employee Module<br>Status: <span style='color: #28a745; font-weight: bold;'>PASSED</span></div>
         </td>
       </tr>
   </tbody>
@@ -425,56 +328,7 @@ infoEvents: 2
 </div>
 <div class="test-content-detail"><div class="detail-body"></div></div>
 </div></div>
-<div class="test-wrapper row view exception-view attributes-view">
-<div class="test-list">
-<div class="test-list-tools">
-<ul class="tools pull-left"><li><a href=""><span class="font-size-14">Exception</span></a></li></ul>
-<ul class="tools text-right"><li><a href="#"><span class="badge badge-primary">1</span></a></li></ul>
-</div>
-<div class="test-list-wrapper scrollable">
-<ul class="test-list-item">
-<li class="test-item">
-<div class="test-detail">
-<span class="meta">
-<span class='badge log badge-danger'>1</span>
-</span>
-<p class="name">java.lang.AssertionError</p>
-<p class="duration text-sm">1 tests</p>
-</div>
-<div class="test-contents d-none">
-<div class="info">
-<h4>java.lang.AssertionError</h4>
-<span status="fail" class='badge log badge-danger'>1 failed</span>
-</div>
-<table class='table table-sm mt-4'>
-<thead>
-<tr>
-<th class="status-col">Status</th>
-<th class="timestamp-col">Timestamp</th>
-<th>TestName</th>
-</tr>
-</thead>
-<tbody>
-<tr class="tag-test-status" status="fail">
-<td><span class="badge log fail-bg">Fail</span></td>
-<td>16:42:36 PM</td>
-<td>
-<a href="#" class="linked" test-id='1' id='1'>testDeleteDivisionFromJson</a>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<div class="test-content scrollable">
-<div class="test-content-detail">
-<div class="detail-body"></div>
-</div>
-</div>
-</div>        </div>
+        </div>
       </div>
     </div>
   </div>

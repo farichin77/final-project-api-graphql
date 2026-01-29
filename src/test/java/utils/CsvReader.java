@@ -482,6 +482,60 @@ public class CsvReader {
         }
     }
 
+    public static class AssignEmployeeTestData {
+        public String employeeIds;
+        public String programId;
+        public String startDate;
+        public String endDate;
+        public String scenario;
+        public String expectedResult;
+
+        public AssignEmployeeTestData(String employeeIds, String programId, String startDate, String endDate, String scenario, String expectedResult) {
+            this.employeeIds = employeeIds;
+            this.programId = programId;
+            this.startDate = startDate;
+            this.endDate = endDate;
+            this.scenario = scenario;
+            this.expectedResult = expectedResult;
+        }
+
+        @Override
+        public String toString() {
+            return "AssignEmployeeTestData{" +
+                    "employeeIds='" + employeeIds + '\'' +
+                    ", programId='" + programId + '\'' +
+                    ", startDate='" + startDate + '\'' +
+                    ", endDate='" + endDate + '\'' +
+                    ", scenario='" + scenario + '\'' +
+                    ", expectedResult='" + expectedResult + '\'' +
+                    '}';
+        }
+    }
+
+    public static class TransferEmployeeTestData {
+        public String employeeIds;
+        public String divisionId;
+        public String scenario;
+        public String expectedResult;
+
+        public TransferEmployeeTestData(String employeeIds, String divisionId, String scenario, String expectedResult) {
+            this.employeeIds = employeeIds;
+            this.divisionId = divisionId;
+            this.scenario = scenario;
+            this.expectedResult = expectedResult;
+        }
+
+        @Override
+        public String toString() {
+            return "TransferEmployeeTestData{" +
+                    "employeeIds='" + employeeIds + '\'' +
+                    ", divisionId='" + divisionId + '\'' +
+                    ", scenario='" + scenario + '\'' +
+                    ", expectedResult='" + expectedResult + '\'' +
+                    '}';
+        }
+    }
+
     public static List<ChapterTestData> readChapterTestData(String filePath) {
         List<ChapterTestData> testDataList = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader("src/test/resources/" + filePath))) {
@@ -937,5 +991,59 @@ public class CsvReader {
         }
         
         return positiveTestData;
+    }
+
+    public static List<AssignEmployeeTestData> readAssignEmployeeTestData(String filePath) {
+        List<AssignEmployeeTestData> testDataList = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("src/test/resources/" + filePath))) {
+            String line;
+            boolean isHeader = true;
+            while ((line = br.readLine()) != null) {
+                if (isHeader) {
+                    isHeader = false;
+                    continue;
+                }
+                String[] values = line.split(",");
+                if (values.length >= 6) {
+                    String employeeIds = values[0].trim();
+                    String programId = values[1].trim();
+                    String startDate = values[2].trim();
+                    String endDate = values[3].trim();
+                    String scenario = values[4].trim();
+                    String expectedResult = values[5].trim();
+                    
+                    testDataList.add(new AssignEmployeeTestData(employeeIds, programId, startDate, endDate, scenario, expectedResult));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return testDataList;
+    }
+
+    public static List<TransferEmployeeTestData> readTransferEmployeeTestData(String filePath) {
+        List<TransferEmployeeTestData> testDataList = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("src/test/resources/" + filePath))) {
+            String line;
+            boolean isHeader = true;
+            while ((line = br.readLine()) != null) {
+                if (isHeader) {
+                    isHeader = false;
+                    continue;
+                }
+                String[] values = line.split(",");
+                if (values.length >= 4) {
+                    String employeeIds = values[0].trim();
+                    String divisionId = values[1].trim();
+                    String scenario = values[2].trim();
+                    String expectedResult = values[3].trim();
+
+                    testDataList.add(new TransferEmployeeTestData(employeeIds, divisionId, scenario, expectedResult));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return testDataList;
     }
 }

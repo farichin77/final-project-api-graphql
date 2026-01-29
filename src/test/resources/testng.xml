@@ -15,14 +15,16 @@
         <classes>
             <class name="tests.employeeModule.division.CreateDivisionTest"/>
             <class name="tests.employeeModule.division.UpdateDivisionTest"/>
+            <class name="tests.employeeModule.employee.CreateEmployeeTest"/>
+            <class name="tests.employeeModule.employee.UpdateEmployeeTest"/>
+            <class name="tests.employeeModule.employee.TransferEmployee"/>
             <class name="tests.trainingModule.training.CreateTrainingTest"/>
             <class name="tests.trainingModule.training.UpdateTrainingTest"/>
             <class name="tests.trainingModule.chapter.CreateChapterTest"/>
             <class name="tests.trainingModule.chapter.UpdateChapterTest"/>
             <class name="tests.trainingModule.content.CreateContentTest"/>
             <class name="tests.trainingModule.content.UpdateContentTest"/>
-            <class name="tests.employeeModule.employee.CreateEmployeeTest"/>
-            <class name="tests.employeeModule.employee.UpdateEmployeeTest"/>
+            <class name="tests.trainingModule.training.AssignedEmployeeTest"/>
         </classes>
     </test>
 
@@ -40,9 +42,9 @@
         <classes>
             <class name="tests.trainingModule.content.DeleteContentTest"/>
             <class name="tests.trainingModule.chapter.DeleteChapterTest"/>
-            <class name="tests.trainingModule.training.DeleteTrainingTest"/>
             <class name="tests.employeeModule.employee.DeleteEmployeeTest"/>
             <class name="tests.employeeModule.division.DeleteDivisionTest"/>
+            <class name="tests.trainingModule.training.DeleteTrainingTest"/>
         </classes>
     </test>
 

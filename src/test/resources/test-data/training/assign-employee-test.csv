@@ -1,0 +1,3 @@
+employeeIds,programId,startDate,endDate,scenario,expectedResult
+FROM_JSON,FROM_JSON,2026-01-28,2027-02-02,Assign employee to training program with valid data,SUCCESS
+FROM_JSON,FROM_JSON,2028-01-01,2026-01-01,assign employee start date later than deadline,FAIL

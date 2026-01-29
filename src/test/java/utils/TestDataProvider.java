@@ -170,4 +170,24 @@ public class TestDataProvider {
         }
         return data;
     }
+
+    @DataProvider(name = "assignEmployeeTestData")
+    public static Object[][] getAssignEmployeeTestData() {
+        var testDataList = CsvReader.readAssignEmployeeTestData("test-data/training/assign-employee-test.csv");
+        Object[][] data = new Object[testDataList.size()][1];
+        for (int i = 0; i < testDataList.size(); i++) {
+            data[i][0] = testDataList.get(i);
+        }
+        return data;
+    }
+
+    @DataProvider(name = "transferEmployeeTestData")
+    public static Object[][] getTransferEmployeeTestData() {
+        var testDataList = CsvReader.readTransferEmployeeTestData("test-data/employee/transfer-employee-test.csv");
+        Object[][] data = new Object[testDataList.size()][1];
+        for (int i = 0; i < testDataList.size(); i++) {
+            data[i][0] = testDataList.get(i);
+        }
+        return data;
+    }
 }
