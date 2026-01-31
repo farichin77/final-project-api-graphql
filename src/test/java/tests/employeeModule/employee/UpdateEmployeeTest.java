@@ -20,8 +20,6 @@ public class UpdateEmployeeTest extends BaseTest {
 
     @Test(dataProvider = "updateEmployeeTestData", dataProviderClass = TestDataProvider.class)
     public void testUpdateEmployeeWithDataDriven(CsvReader.UpdateEmployeeTestData testData) {
-        AuthService.postLogin();
-        
         String employeeId = JsonHelper.getLatestIdFromJson(FilePaths.EMPLOYEE_DATA_JSON);
         if (employeeId == null) {
             Assert.fail("No employee ID found in JSON file.");

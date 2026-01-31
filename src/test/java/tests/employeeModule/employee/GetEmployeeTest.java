@@ -15,11 +15,6 @@ import java.util.Map;
 
 public class GetEmployeeTest extends BaseTest {
 
-    @BeforeClass
-    public void setup() {
-        AuthService.postLogin();
-    }
-
     @Test
     public void testGetEmployeeData() {
         String employeeId = JsonHelper.getLatestIdFromJson(FilePaths.EMPLOYEE_DATA_JSON);

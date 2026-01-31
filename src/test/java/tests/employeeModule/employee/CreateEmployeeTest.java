@@ -19,12 +19,10 @@ import java.util.Map;
 
 public class CreateEmployeeTest extends BaseTest {
 
-    // Static variable to store Ahmad ID for delete test
     public static String AHMAD_EMPLOYEE_ID = null;
 
     @Test(dataProvider = "employeeTestData", dataProviderClass = TestDataProvider.class)
     public void testAddEmployeeWithDataDriven(CsvReader.EmployeeTestData testData) {
-        AuthService.postLogin();
 
         String processedEmail = testData.email.replace("{timestamp}", String.valueOf(System.currentTimeMillis()));
         
@@ -66,14 +64,13 @@ public class CreateEmployeeTest extends BaseTest {
                     if ("Ahmad".equals(testData.name)) {
                         AHMAD_EMPLOYEE_ID = employeeId;
                         JsonHelper.saveIdToJson(FilePaths.EMPLOYEE_DATA_JSON, AHMAD_EMPLOYEE_ID, testData.name, null, null);
-                    } else if ("Budi".equals(testData.name) || "Citra".equals(testData.name)) {
-                        JsonHelper.saveIdToJson(FilePaths.EMPLOYEE_DATA_JSON, employeeId, testData.name, null, null);
                     }
-                    System.out.println("✓ Employee created: " + employeeId);
+
+                    System.out.println("Employee created: " + employeeId);
                 } else if ("FAIL".equalsIgnoreCase(testData.expectedResult)) {
                     Assert.assertTrue(hasGraphQLErrors || responseBody.data == null || responseBody.data.createEmployee == null,
                         "Creation should have failed: " + testData.scenario);
-                    System.out.println("✓ Failure confirmed as expected");
+                    System.out.println("Failure confirmed as expected");
                 }
             } catch (Exception e) {
                 if ("FAIL".equalsIgnoreCase(testData.expectedResult)) {

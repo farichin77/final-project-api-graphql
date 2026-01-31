@@ -6,10 +6,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import services.AuthService;
 import client.GraphQlClient;
-import utils.CsvReader;
-import utils.GraphQlFileReader;
-import utils.JsonHelper;
-import utils.FilePaths;
+import utils.*;
 import models.responses.CommonDeleteResponse;
 import io.restassured.response.Response;
 
@@ -18,20 +15,8 @@ import java.util.Map;
 
 public class DeleteChapterTest extends BaseTest {
 
-    @DataProvider(name = "deleteChapterTestData")
-    public Object[][] getDeleteChapterTestData() {
-        var testDataList = CsvReader.readDeleteChapterTestData("test-data/training/delete-chapter-test.csv");
-        Object[][] data = new Object[testDataList.size()][1];
-        for (int i = 0; i < testDataList.size(); i++) {
-            data[i][0] = testDataList.get(i);
-        }
-        return data;
-    }
-
-    @Test(dataProvider = "deleteChapterTestData")
+    @Test(dataProvider = "deleteChapterTestData", dataProviderClass = TestDataProvider.class)
     public void testDeleteChapterWithDataDriven(CsvReader.DeleteChapterTestData testData) {
-        AuthService.postLogin();
-        
         String latestTrainingId = JsonHelper.getLatestIdFromJson(FilePaths.TRAINING_DATA_JSON);
         if (latestTrainingId == null) {
             Assert.fail("No training ID found in JSON file.");

@@ -21,7 +21,6 @@ public class CreateDivisionTest extends BaseTest {
 
     @Test(dataProvider = "divisionTestData", dataProviderClass = TestDataProvider.class)
     public void testCreateDivisionWithDataDriven(CsvReader.DivisionTestData testData) {
-        AuthService.postLogin();
 
         Map<String, Object> variables = CreateDivisionVariable.variables(testData.name, testData.description);
         String query = GraphQlFileReader.readMutationEmployee("CreateDivision.graphql");

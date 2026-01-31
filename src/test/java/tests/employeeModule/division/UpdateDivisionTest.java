@@ -20,8 +20,6 @@ public class UpdateDivisionTest extends BaseTest {
 
     @Test(dataProvider = "updateDivisionTestData", dataProviderClass = TestDataProvider.class)
     public void testUpdateDivisionWithDataDriven(CsvReader.UpdateDivisionTestData testData) {
-        AuthService.postLogin();
-        
         String divisionId = JsonHelper.getLatestIdFromJson(FilePaths.DIVISION_DATA_JSON);
         if (divisionId == null) {
             Assert.fail("No division ID found in JSON file.");

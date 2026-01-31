@@ -21,7 +21,6 @@ public class DeleteContentTest extends BaseTest {
 
     @Test(dataProvider = "deleteContentTestData", dataProviderClass = TestDataProvider.class)
     public void testDeleteContentWithDataDriven(DeleteContentTestData testData) {
-        AuthService.postLogin();
         
         String contentId = resolveContentId(testData.id);
         if (contentId == null || contentId.isEmpty()) {

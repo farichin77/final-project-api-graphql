@@ -30,10 +30,6 @@ public class UpdateChapterTest extends BaseTest {
 
     @Test(dataProvider = "updateChapterTestData")
     public void testUpdateChapterWithDataDriven(CsvReader.UpdateChapterTestData testData) {
-        // First authenticate to get valid session
-        AuthService.postLogin();
-        
-        // Get chapter ID from JSON file
         String chapterId = JsonHelper.getIdFromJson(FilePaths.CHAPTER_DATA_JSON);
         if (chapterId == null) {
             Assert.fail("No chapter ID found in JSON file. Run ChapterDataDrivenTest first.");

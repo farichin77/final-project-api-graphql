@@ -22,7 +22,6 @@ public class AssignedEmployeeTest extends BaseTest {
 
     @Test(dataProvider = "assignEmployeeTestData", dataProviderClass = TestDataProvider.class)
     public void testAssignEmployeeToTrainingWithDataDriven(CsvReader.AssignEmployeeTestData testData) {
-        AuthService.postLogin();
 
         // Parse employeeIds from JSON or use from CSV
         List<String> employeeIdsList;

@@ -18,7 +18,6 @@ public class DeleteEmployeeTest extends BaseTest {
 
     @Test
     public void testDeleteEmployeeFromJson() {
-        AuthService.postLogin();
         
         String employeeId = JsonHelper.getLatestIdFromJson(FilePaths.EMPLOYEE_DATA_JSON);
         if (employeeId == null) {

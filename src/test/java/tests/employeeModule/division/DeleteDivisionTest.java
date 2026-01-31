@@ -17,7 +17,6 @@ public class DeleteDivisionTest extends BaseTest {
 
     @Test
     public void testDeleteDivisionFromJson() {
-        AuthService.postLogin();
         
         String divisionId = JsonHelper.getLatestIdFromJson(FilePaths.DIVISION_DATA_JSON);
         if (divisionId == null) {

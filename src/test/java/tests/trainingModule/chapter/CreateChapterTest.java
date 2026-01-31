@@ -20,7 +20,6 @@ public class CreateChapterTest extends BaseTest {
 
     @Test(dataProvider = "chapterTestData", dataProviderClass = TestDataProvider.class)
     public void testCreateChapterWithDataDriven(CsvReader.ChapterTestData testData) {
-        AuthService.postLogin();
 
         String latestTrainingId = JsonHelper.getLatestIdFromJson(FilePaths.TRAINING_DATA_JSON);
         if (latestTrainingId == null) {

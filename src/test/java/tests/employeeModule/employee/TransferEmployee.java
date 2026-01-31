@@ -22,8 +22,6 @@ public class TransferEmployee extends BaseTest {
 
     @Test(dataProvider = "transferEmployeeTestData", dataProviderClass = TestDataProvider.class)
     public void testTransferEmployeeWithDataDriven(CsvReader.TransferEmployeeTestData testData) {
-        AuthService.postLogin();
-
         List<String> employeeIdsList;
         if (testData.employeeIds != null && testData.employeeIds.equalsIgnoreCase("FROM_JSON")) {
             String employeeId = JsonHelper.getLatestIdFromJson(FilePaths.EMPLOYEE_DATA_JSON);

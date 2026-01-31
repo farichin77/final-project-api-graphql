@@ -15,11 +15,6 @@ import java.util.Map;
 
 public class GetDivisionTest extends BaseTest {
 
-    @BeforeClass
-    public void setup() {
-        AuthService.postLogin();
-    }
-
     @Test
     public void testGetDivisionData() {
         String divisionId = JsonHelper.getLatestIdFromJson(FilePaths.DIVISION_DATA_JSON);

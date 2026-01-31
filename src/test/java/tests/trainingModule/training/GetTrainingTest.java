@@ -15,10 +15,6 @@ import java.util.Map;
 
 public class GetTrainingTest extends BaseTest {
 
-    @BeforeClass
-    public void setup() {
-        AuthService.postLogin();
-    }
 
     @Test
     public void testGetTrainingData() {

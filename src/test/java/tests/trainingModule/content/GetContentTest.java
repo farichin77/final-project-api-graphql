@@ -15,11 +15,6 @@ import java.util.Map;
 
 public class GetContentTest extends BaseTest {
 
-    @BeforeClass
-    public void setup() {
-        AuthService.postLogin();
-    }
-
     @Test
     public void testGetContentData() {
         String contentId = JsonHelper.getIdFromJson(FilePaths.CONTENT_DATA_JSON);

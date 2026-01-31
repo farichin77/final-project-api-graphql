@@ -20,8 +20,7 @@ public class UpdateContentTest extends BaseTest {
 
     @Test(dataProvider = "updateContentTestData", dataProviderClass = TestDataProvider.class)
     public void testUpdateContentWithDataDriven(CsvReader.UpdateContentTestData testData) {
-        AuthService.postLogin();
-        
+
         String contentId = JsonHelper.getIdFromJson(FilePaths.CONTENT_DATA_JSON);
         if (contentId == null) {
             Assert.fail("No content ID found in JSON file.");

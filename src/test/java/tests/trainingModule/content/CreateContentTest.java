@@ -20,7 +20,6 @@ public class CreateContentTest extends BaseTest {
 
     @Test(dataProvider = "contentTestData", dataProviderClass = TestDataProvider.class)
     public void testCreateContentWithDataDriven(CsvReader.ContentTestData testData) {
-        AuthService.postLogin();
 
         String latestTrainingId = JsonHelper.getLatestIdFromJson(FilePaths.TRAINING_DATA_JSON);
         if (latestTrainingId == null) {

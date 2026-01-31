@@ -20,7 +20,6 @@ public class UpdateTrainingTest extends BaseTest {
 
     @Test(dataProvider = "updateTrainingTestData", dataProviderClass = TestDataProvider.class)
     public void testUpdateTrainingWithDataDriven(CsvReader.UpdateTrainingTestData testData) {
-        AuthService.postLogin();
         
         String trainingId = JsonHelper.getLatestIdFromJson(FilePaths.TRAINING_DATA_JSON);
         if (trainingId == null) {

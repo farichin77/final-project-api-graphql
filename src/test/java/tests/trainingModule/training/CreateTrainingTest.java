@@ -20,8 +20,6 @@ public class CreateTrainingTest extends BaseTest {
 
     @Test(dataProvider = "trainingTestData", dataProviderClass = TestDataProvider.class)
     public void testCreateTrainingWithDataDriven(CsvReader.TrainingTestData testData) {
-        AuthService.postLogin();
-
         Map<String, Object> variables = CreateTrainingVariable.variables(
             testData.title,
             testData.description,

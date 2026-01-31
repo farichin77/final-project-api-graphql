@@ -14,12 +14,6 @@ import utils.JsonHelper;
 import java.util.Map;
 
 public class GetChapterTest extends BaseTest {
-
-    @BeforeClass
-    public void setup() {
-        AuthService.postLogin();
-    }
-
     @Test
     public void testGetChapterData() {
         String chapterId = JsonHelper.getLatestIdFromJson(FilePaths.CHAPTER_DATA_JSON);

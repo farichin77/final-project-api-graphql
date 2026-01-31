@@ -19,16 +19,11 @@ public class DeleteTrainingTest extends BaseTest {
 
     @Test(dataProvider = "deleteTrainingTestData", dataProviderClass = TestDataProvider.class)
     public void testDeleteTrainingWithDataDriven(CsvReader.DeleteTrainingTestData testData) {
-        // First authenticate to get valid session
-        AuthService.postLogin();
-        
-        // Get training ID from JSON file
+
         String trainingId = JsonHelper.getLatestIdFromJson(FilePaths.TRAINING_DATA_JSON);
         if (trainingId == null) {
             Assert.fail("No training ID found in JSON file. Run CreateTrainingTest first.");
         }
-        
-        // Replace placeholder with actual training ID
         String actualId = testData.id.equals("{lastCreatedId}") ? trainingId : testData.id;
         
         System.out.println("=== Deleting Training ===");
